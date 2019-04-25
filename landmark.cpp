@@ -8,7 +8,7 @@ int main(int argc, char* argv[]) {
         std::cout << "the input image is empty." << std::endl;
         return -1;
     }
-    cv::resize(img_src, img_src, cv::Size(480, 480));
+    // cv::resize(img_src, img_src, cv::Size(480, 480));
     ncnn::Net net;
     if (net.load_param("./model/landmark.param") == -1 ||
         net.load_model("./model/landmark.bin") == -1) {
