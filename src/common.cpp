@@ -84,24 +84,30 @@ int ComputeIOU(const cv::Rect & rect1,
 	return 0;
 }
 
-int NMS(std::vector<FaceInfo>* faces) {
-	std::vector<FaceInfo>::iterator it = faces->begin();
-	while (it != faces->end() - 1) {
-		std::vector<FaceInfo>::iterator itc = it + 1;
-		while (itc != faces->end()) {
-			float iou = 0.0f;
-			ComputeIOU(it->face_, itc->face_, &iou);
-			if (iou > 0.4) {
-				std::cout << "curr rect: " << it->face_ << std::endl;
-				std::cout << "face: " << itc->face_ << std::endl;
-				std::cout << "iou is: " << iou << std::endl;
-				itc = faces->erase(itc);
-			}
-			else {
-				++itc;
-			}
-		}
-		++it;
+int NMS(const std::vector<FaceInfo>& faces, std::vector<FaceInfo>* result) {
+	result->clear();
+	if (faces.size() == 0)
+		return -1;
+
+	std::vector<size_t> idx(faces.size());
+
+	for (unsigned i = 0; i < idx.size(); i++) {
+		idx[i] = i;
 	}
+
+	while (idx.size() > 0) {
+		int good_idx = idx[0];
+		result->push_back(faces[good_idx]);
+		std::vector<size_t> tmp = idx;
+		idx.clear();
+		for (unsigned i = 1; i < tmp.size(); i++) {
+			int tmp_i = tmp[i];
+			float iou = 0.0f;
+			ComputeIOU(faces[good_idx].face_, faces[tmp_i].face_, &iou);
+			if (iou <= 0.4)
+				idx.push_back(tmp_i);
+		}
+	}
+
 	return 0;
 }

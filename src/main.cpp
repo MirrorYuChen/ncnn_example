@@ -2,7 +2,7 @@
 #include "face_detect.h"
 
 int main(int argc, char* argv[]) {
-	cv::Mat img_src = cv::imread("./images/test_2.jpg");
+	cv::Mat img_src = cv::imread("./images/test_1.jpg");
 	float factor_x = img_src.cols / 300.0f;
 	float factor_y = img_src.rows / 300.0f;
 	const char* root_path = "./models";

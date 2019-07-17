@@ -82,6 +82,7 @@ int FaceDetector::Impl::Detect(const cv::Mat & img_src,
 	ex.input("data", in);
 
 	std::vector<float> scores;
+	std::vector<FaceInfo> faces_tmp;
 	for (int i = 0; i < 3; ++i) {
 		std::string class_layer_name = "face_rpn_cls_prob_reshape_stride" + std::to_string(RPNs[i]);
 		std::string bbox_layer_name = "face_rpn_bbox_pred_stride" + std::to_string(RPNs[i]);
@@ -133,16 +134,21 @@ int FaceDetector::Impl::Detect(const cv::Mat & img_src,
 						center.y - curr_height* 0.5f,
 						curr_width,
 						curr_height);
+					curr_box.x = MAX(curr_box.x, 0);
+					curr_box.y = MAX(curr_box.y, 0);
+					curr_box.width = MIN(300 - curr_box.x, curr_box.width);
+					curr_box.height = MIN(300 - curr_box.y, curr_box.height);
+
 					std::cout << "final box: " << curr_box << std::endl;
 					FaceInfo face(curr_box, score);
-					faces->push_back(face);
+					faces_tmp.push_back(face);
 				}
 			}
 		}
 	}
 
-	std::sort(faces->begin(), faces->end(), [](FaceInfo face1, FaceInfo face2) { return face1.score_ < face2.score_; });
-	NMS(faces);
+	std::sort(faces_tmp.begin(), faces_tmp.end(), [](FaceInfo face1, FaceInfo face2) { return face1.score_ < face2.score_; });
+	NMS(faces_tmp, faces);
 
 	return 0;
 }

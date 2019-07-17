@@ -30,7 +30,7 @@ float InterRectArea(const cv::Rect & a,
 int ComputeIOU(const cv::Rect & rect1,
 	const cv::Rect & rect2, float * iou);
 
-int NMS(std::vector<FaceInfo>* faces);
+int NMS(const std::vector<FaceInfo>& faces, std::vector<FaceInfo> * result);
 
 #endif // !_COMMON_H_
 
