@@ -1,5 +1,5 @@
 # **ncnn_106landmarks**
-# ** 1. add landmark**
+# **1. add landmark**
 ## **(1). the original model comes from repositories:**
 ### https://github.com/zuoqing1988/ZQCNN  by zuoqing
 ## **(2). the process of converting mxnet model to ncnn formate is:**
@@ -16,7 +16,7 @@
 #### **To:**
 #### ncnn::Mat ncnn_in = ncnn::Mat::from_pixels_resize(img_src.data,
 ####        ncnn::Mat::PIXEL_BGR, img_src.cols, img_src.rows, 96, 96);
-# ** 2. add retinaface detection**
+# **2. add retinaface detection**
 ## the code refer to the repositories:
 ### https://github.com/Charrin/RetinaFace-Cpp by Charrin
 ## model comes from:
