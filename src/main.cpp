@@ -2,10 +2,10 @@
 #include "face_detect.h"
 
 int main(int argc, char* argv[]) {
-	cv::Mat img_src = cv::imread("./images/test_1.jpg");
+	cv::Mat img_src = cv::imread("../images/test_1.jpg");
 	float factor_x = img_src.cols / 300.0f;
 	float factor_y = img_src.rows / 300.0f;
-	const char* root_path = "./models";
+	const char* root_path = "../models";
 	FaceDetector face_detector;
 	face_detector.LoadModel(root_path);
 	std::vector<FaceInfo> faces;
@@ -23,7 +23,7 @@ int main(int argc, char* argv[]) {
 			cv::circle(img_src, keypoints[j], 1, cv::Scalar(0, 0, 255), 1);
 		}
 	}
-	cv::imwrite("./images/result.jpg", img_src);
+	cv::imwrite("../images/result.jpg", img_src);
 	cv::imshow("result", img_src);
 	cv::waitKey(0);
 

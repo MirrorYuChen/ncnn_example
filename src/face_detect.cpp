@@ -183,9 +183,7 @@ int FaceDetector::Impl::ExtractKeypoints(const cv::Mat & img_src,
 }
 
 FaceDetector::FaceDetector() {
-	if (!impl) {
-		impl = new Impl();
-	}
+	impl = new FaceDetector::Impl();
 }
 
 FaceDetector::~FaceDetector() {
