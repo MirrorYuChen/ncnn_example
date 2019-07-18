@@ -23,3 +23,9 @@
 ### https://github.com/Charrin/RetinaFace-Cpp/tree/master/Demo/ncnn/models
 ### **result:**
 ### ![图片](https://github.com/MirrorYuChen/ncnn_106landmarks/blob/master/images/result.jpg)
+# **3.add jetson nano project based on vulkan**
+## **(1). build vulkan ncnn:**
+### https://github.com/Tencent/ncnn/wiki/FAQ-ncnn-vulkan
+## **(2). build the project:**
+### >mkdir build && cd build && cmake .. && make -j3
+### >./main
