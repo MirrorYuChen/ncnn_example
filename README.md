@@ -29,3 +29,7 @@
 ## **(2). build the project:**
 ### >mkdir build && cd build && cmake .. && make -j3
 ### >./main
+# **TODO:**
+## (1). Optimaize the code
+## (2). add face detection: MTCNNN
+## (3). add face recognize: Mobilefacenet
