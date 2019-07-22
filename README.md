@@ -16,6 +16,10 @@
 #### **To:**
 #### ncnn::Mat ncnn_in = ncnn::Mat::from_pixels_resize(img_src.data,
 ####        ncnn::Mat::PIXEL_BGR, img_src.cols, img_src.rows, 96, 96);
+
+## **(5).add input size: 112x112 model:**
+#### the most effect model.
+
 # **2. add retinaface detection**
 ## the code refer to the repositories:
 ### https://github.com/Charrin/RetinaFace-Cpp by Charrin
@@ -23,6 +27,7 @@
 ### https://github.com/Charrin/RetinaFace-Cpp/tree/master/Demo/ncnn/models
 ### **result:**
 ### ![图片](https://github.com/MirrorYuChen/ncnn_106landmarks/blob/master/images/result.jpg)
+
 # **3.add jetson nano project based on vulkan**
 ## **(1). build vulkan ncnn:**
 ### https://github.com/Tencent/ncnn/wiki/FAQ-ncnn-vulkan
