@@ -1,11 +1,15 @@
 #include "opencv2/opencv.hpp"
 #include "face_detect.h"
+#include "ncnn/net.h"
+
 
 int main(int argc, char* argv[]) {
 	cv::Mat img_src = cv::imread("../images/test_1.jpg");
 	float factor_x = img_src.cols / 300.0f;
 	float factor_y = img_src.rows / 300.0f;
 	const char* root_path = "../models";
+
+	ncnn::create_gpu_instance();	
 	FaceDetector face_detector;
 	face_detector.LoadModel(root_path);
 	std::vector<FaceInfo> faces;
@@ -27,6 +31,7 @@ int main(int argc, char* argv[]) {
 	cv::imshow("result", img_src);
 	cv::waitKey(0);
 
+	ncnn::destroy_gpu_instance();
 	return 0;
 
 }
