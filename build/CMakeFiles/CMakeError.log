@@ -1,0 +1,56 @@
+Determining if the pthread_create exist failed with the following output:
+Change Dir: /home/gli-ai/workspace/ncnn_106landmarks/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_fdb26/fast 
+/usr/bin/make -f CMakeFiles/cmTC_fdb26.dir/build.make CMakeFiles/cmTC_fdb26.dir/build
+make[1]: Entering directory '/home/gli-ai/workspace/ncnn_106landmarks/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_fdb26.dir/CheckSymbolExists.c.o
+/usr/bin/cc   -fPIC    -o CMakeFiles/cmTC_fdb26.dir/CheckSymbolExists.c.o   -c /home/gli-ai/workspace/ncnn_106landmarks/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_fdb26
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_fdb26.dir/link.txt --verbose=1
+/usr/bin/cc -fPIC     -rdynamic CMakeFiles/cmTC_fdb26.dir/CheckSymbolExists.c.o  -o cmTC_fdb26 
+CMakeFiles/cmTC_fdb26.dir/CheckSymbolExists.c.o: In function `main':
+CheckSymbolExists.c:(.text+0x14): undefined reference to `pthread_create'
+CheckSymbolExists.c:(.text+0x18): undefined reference to `pthread_create'
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_fdb26.dir/build.make:86: recipe for target 'cmTC_fdb26' failed
+make[1]: *** [cmTC_fdb26] Error 1
+make[1]: Leaving directory '/home/gli-ai/workspace/ncnn_106landmarks/build/CMakeFiles/CMakeTmp'
+Makefile:121: recipe for target 'cmTC_fdb26/fast' failed
+make: *** [cmTC_fdb26/fast] Error 2
+
+File /home/gli-ai/workspace/ncnn_106landmarks/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <pthread.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef pthread_create
+  return ((int*)(&pthread_create))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /home/gli-ai/workspace/ncnn_106landmarks/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_da8fd/fast 
+/usr/bin/make -f CMakeFiles/cmTC_da8fd.dir/build.make CMakeFiles/cmTC_da8fd.dir/build
+make[1]: Entering directory '/home/gli-ai/workspace/ncnn_106landmarks/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_da8fd.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -fPIC -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_da8fd.dir/CheckFunctionExists.c.o   -c /usr/local/share/cmake-3.14/Modules/CheckFunctionExists.c
+Linking C executable cmTC_da8fd
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_da8fd.dir/link.txt --verbose=1
+/usr/bin/cc -fPIC -DCHECK_FUNCTION_EXISTS=pthread_create    -rdynamic CMakeFiles/cmTC_da8fd.dir/CheckFunctionExists.c.o  -o cmTC_da8fd -lpthreads 
+/usr/bin/ld: cannot find -lpthreads
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_da8fd.dir/build.make:86: recipe for target 'cmTC_da8fd' failed
+make[1]: *** [cmTC_da8fd] Error 1
+make[1]: Leaving directory '/home/gli-ai/workspace/ncnn_106landmarks/build/CMakeFiles/CMakeTmp'
+Makefile:121: recipe for target 'cmTC_da8fd/fast' failed
+make: *** [cmTC_da8fd/fast] Error 2
+
+

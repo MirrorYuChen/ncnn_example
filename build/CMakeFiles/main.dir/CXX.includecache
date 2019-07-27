@@ -152,41 +152,25 @@ process.h
 pthread.h
 -
 
-/home/mirror/workspace/ncnn_106landmarks/src/common.cpp
-common.h
-/home/mirror/workspace/ncnn_106landmarks/src/common.h
-iostream
--
-
-/home/mirror/workspace/ncnn_106landmarks/src/common.h
+/home/gli-ai/workspace/ncnn_106landmarks/src/common.h
 vector
 -
 opencv2/core.hpp
-/home/mirror/workspace/ncnn_106landmarks/src/opencv2/core.hpp
+/home/gli-ai/workspace/ncnn_106landmarks/src/opencv2/core.hpp
 
-/home/mirror/workspace/ncnn_106landmarks/src/face_detect.cpp
-face_detect.h
-/home/mirror/workspace/ncnn_106landmarks/src/face_detect.h
-iostream
--
-string
--
-ncnn/net.h
-/home/mirror/workspace/ncnn_106landmarks/src/ncnn/net.h
-common.h
-/home/mirror/workspace/ncnn_106landmarks/src/common.h
-
-/home/mirror/workspace/ncnn_106landmarks/src/face_detect.h
+/home/gli-ai/workspace/ncnn_106landmarks/src/face_detect.h
 vector
 -
 common.h
-/home/mirror/workspace/ncnn_106landmarks/src/common.h
+/home/gli-ai/workspace/ncnn_106landmarks/src/common.h
 opencv2/core.hpp
-/home/mirror/workspace/ncnn_106landmarks/src/opencv2/core.hpp
+/home/gli-ai/workspace/ncnn_106landmarks/src/opencv2/core.hpp
 
-/home/mirror/workspace/ncnn_106landmarks/src/main.cpp
+/home/gli-ai/workspace/ncnn_106landmarks/src/main.cpp
 opencv2/opencv.hpp
-/home/mirror/workspace/ncnn_106landmarks/src/opencv2/opencv.hpp
+/home/gli-ai/workspace/ncnn_106landmarks/src/opencv2/opencv.hpp
 face_detect.h
-/home/mirror/workspace/ncnn_106landmarks/src/face_detect.h
+/home/gli-ai/workspace/ncnn_106landmarks/src/face_detect.h
+ncnn/net.h
+/home/gli-ai/workspace/ncnn_106landmarks/src/ncnn/net.h
 

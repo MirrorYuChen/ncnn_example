@@ -9,8 +9,14 @@ class FaceDetector::Impl {
  public:
     Impl() : fdnet_(new ncnn::Net()),
              flnet_(new ncnn::Net()),
-             initialized(false) {}
-    ~Impl() {}
+             initialized(false) {
+		ncnn::create_gpu_instance();	
+	}
+    ~Impl() {
+		fdnet_->clear();
+		flnet_->clear();
+		ncnn::destroy_gpu_instance();
+	}
 
     ncnn::Net* fdnet_;
     ncnn::Net* flnet_;
@@ -38,8 +44,8 @@ int FaceDetector::Impl::LoadModel(const char * root_path) {
 		std::cout << "load face detect model failed." << std::endl;
 		return 10000;
 	}
-	std::string fl_param = std::string(root_path) + "/fl.param";
-	std::string fl_bin = std::string(root_path) + "/fl.bin";
+	std::string fl_param = std::string(root_path) + "/lnet112.param";
+	std::string fl_bin = std::string(root_path) + "/lnet112.bin";
 	flnet_->opt.use_vulkan_compute = 1;
 	if (flnet_->load_param(fl_param.c_str()) == -1 ||
 		flnet_->load_model(fl_bin.c_str()) == -1) {
@@ -169,7 +175,7 @@ int FaceDetector::Impl::ExtractKeypoints(const cv::Mat & img_src,
 	cv::Mat img_face = img_src(face).clone();
 	ncnn::Extractor ex = flnet_->create_extractor();
 	ncnn::Mat in = ncnn::Mat::from_pixels_resize(img_face.data,
-		ncnn::Mat::PIXEL_BGR, img_face.cols, img_face.rows, 96, 96);
+		ncnn::Mat::PIXEL_BGR, img_face.cols, img_face.rows, 112, 112);
 	in.substract_mean_normalize(flMeanVals, flNormVals);
 	ex.input("data", in);
 	ncnn::Mat out;

@@ -10,7 +10,7 @@ const char ompver_str[] = { 'I', 'N', 'F', 'O', ':', 'O', 'p', 'e', 'n', 'M',
                             ('0' + ((_OPENMP/10)%10)),
                             ('0' + ((_OPENMP/1)%10)),
                             ']', '\0' };
-int main()
+int main(void)
 {
   puts(ompver_str);
   return 0;
