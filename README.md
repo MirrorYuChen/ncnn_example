@@ -34,7 +34,9 @@
 ## **(2). build the project:**
 ### >mkdir build && cd build && cmake .. && make -j3
 ### >./main
+
+# **4.add extract face feature interface based on mobilefacenet**
 # **TODO:**
 ## (1). Optimaize the code
 ## (2). add face detection: MTCNN
-## (3). add face recognize: Mobilefacenet
+## (3). add face alignment interface
