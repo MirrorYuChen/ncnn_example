@@ -222,6 +222,7 @@ int FaceDetector::Impl::ExtractFeature(const cv::Mat& img_face,
 	for (int i = 0; i < kFaceFeatureDim; ++i) {
 		feature->at(i) = out[i];
 	}
+	std::cout << "extract feature end." << std::endl;
 	return 0;
 }
 
