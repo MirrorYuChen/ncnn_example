@@ -152,11 +152,29 @@ process.h
 pthread.h
 -
 
+/home/gli-ai/workspace/ncnn_106landmarks/src/common.cpp
+common.h
+/home/gli-ai/workspace/ncnn_106landmarks/src/common.h
+iostream
+-
+
 /home/gli-ai/workspace/ncnn_106landmarks/src/common.h
 vector
 -
 opencv2/core.hpp
 /home/gli-ai/workspace/ncnn_106landmarks/src/opencv2/core.hpp
+
+/home/gli-ai/workspace/ncnn_106landmarks/src/face_detect.cpp
+face_detect.h
+/home/gli-ai/workspace/ncnn_106landmarks/src/face_detect.h
+iostream
+-
+string
+-
+ncnn/net.h
+/home/gli-ai/workspace/ncnn_106landmarks/src/ncnn/net.h
+common.h
+/home/gli-ai/workspace/ncnn_106landmarks/src/common.h
 
 /home/gli-ai/workspace/ncnn_106landmarks/src/face_detect.h
 vector

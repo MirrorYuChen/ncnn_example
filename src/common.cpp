@@ -30,8 +30,6 @@ int ScaleAnchors(const std::vector<cv::Rect>& ratio_anchors,
 		cv::Rect anchor = ratio_anchors.at(i);
 		cv::Point2f center = cv::Point2f(anchor.x + anchor.width * 0.5f,
 			anchor.y + anchor.height * 0.5f);
-		std::cout << "center.x: " << center.x << std::endl;
-		std::cout << "center.y: " << center.y << std::endl;
 		for (int j = 0; j < static_cast<int>(scales.size()); ++j) {
 			float scale = scales.at(j);
 			float curr_width = scale * (anchor.width + 1);
@@ -53,18 +51,10 @@ int GenerateAnchors(const int & base_size,
 	std::vector<cv::Rect>* anchors) {
 	anchors->clear();
 	cv::Rect anchor = cv::Rect(0, 0, base_size, base_size);
-	std::cout << "base size: " << anchor.width << std::endl;
 	std::vector<cv::Rect> ratio_anchors;
 	RatioAnchors(anchor, ratios, &ratio_anchors);
-	for (int i = 0; i < static_cast<int>(ratio_anchors.size()); ++i) {
-		std::cout << "ratio anchor: " << ratio_anchors[i] << std::endl;
-	}
 	ScaleAnchors(ratio_anchors, scales, anchors);
-	std::cout << "anchor size: " << anchors->size() << std::endl;
-	for (int i = 0; i < static_cast<int>(anchors->size()); ++i) {
-		std::cout << "rect: " << anchors->at(i) << std::endl;
-	}
-
+	
 	return 0;
 }
 

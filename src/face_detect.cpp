@@ -75,6 +75,7 @@ int FaceDetector::Impl::LoadModel(const char * root_path) {
 int FaceDetector::Impl::Detect(const cv::Mat & img_src,
 	std::vector<FaceInfo>* faces) {
 	faces->clear();
+	std::cout << "start face detect." << std::endl;
 	if (!initialized) {
 		std::cout << "model uninitialized." << std::endl;
 		return 10000;
@@ -101,12 +102,7 @@ int FaceDetector::Impl::Detect(const cv::Mat & img_src,
 		ex.extract(bbox_layer_name.c_str(), bbox_mat);
 		ex.extract(landmark_layer_name.c_str(), landmark_mat);
 
-		printf("cls %d %d %d\n", class_mat.c, class_mat.h, class_mat.w);
-		printf("reg %d %d %d\n", bbox_mat.c, bbox_mat.h, bbox_mat.w);
-		printf("pts %d %d %d\n", landmark_mat.c, landmark_mat.h, landmark_mat.w);
-
-		ANCHORS anchors = anchors_generated_.at(i);		
-
+		ANCHORS anchors = anchors_generated_.at(i);
 		int width = class_mat.w;
 		int height = class_mat.h;
 		int anchor_num = static_cast<int>(anchors.size());
@@ -123,9 +119,6 @@ int FaceDetector::Impl::Detect(const cv::Mat & img_src,
 						h * RPNs[i] + anchors[a].y,
 						anchors[a].width,
 						anchors[a].height);
-					std::cout << "anchor stride: " << RPNs[i] << std::endl;
-					std::cout << "anchor info: " << anchors[a] << std::endl;
-					std::cout << "box: " << box << std::endl;
 
 					float delta_x = bbox_mat.channel(a * 4 + 0)[index];
 					float delta_y = bbox_mat.channel(a * 4 + 1)[index];
@@ -147,7 +140,6 @@ int FaceDetector::Impl::Detect(const cv::Mat & img_src,
 					curr_box.width = MIN(300 - curr_box.x, curr_box.width);
 					curr_box.height = MIN(300 - curr_box.y, curr_box.height);
 
-					std::cout << "final box: " << curr_box << std::endl;
 					FaceInfo face(curr_box, score);
 					faces_tmp.push_back(face);
 				}
@@ -157,12 +149,14 @@ int FaceDetector::Impl::Detect(const cv::Mat & img_src,
 
 	std::sort(faces_tmp.begin(), faces_tmp.end(), [](FaceInfo face1, FaceInfo face2) { return face1.score_ < face2.score_; });
 	NMS(faces_tmp, faces);
+	std::cout << faces->size() << " faces detected." << std::endl;
 
 	return 0;
 }
 
 int FaceDetector::Impl::ExtractKeypoints(const cv::Mat & img_src,
 	const cv::Rect & face, std::vector<cv::Point>* keypoints) {
+	std::cout << "start keypoints extract." << std::endl;
 	if (!initialized) {
 		std::cout << "model uninitialized." << std::endl;
 		return 10000;
@@ -181,12 +175,11 @@ int FaceDetector::Impl::ExtractKeypoints(const cv::Mat & img_src,
 	ncnn::Mat out;
 	ex.extract("bn6_3", out);
 	for (int i = 0; i < 106; ++i) {
-		//std::cout << "ncnn out: " << out[2 * i] << " " << out[2 * i + 1] << std::endl;
 		float x = abs(out[2 * i] * img_face.cols) + face.x;
 		float y = abs(out[2 * i + 1] * img_face.rows) + face.y;
 		keypoints->push_back(cv::Point(x, y));
 	}
-
+	std::cout << "keypoints extract end." << std::endl;
 	return 0;
 }
 
