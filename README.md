@@ -37,6 +37,6 @@
 
 # **4.add extract face feature interface based on mobilefacenet**
 # **TODO:**
-## (1). Optimaize the code
+## (1). Optimaize the code（Openmp）
 ## (2). add face detection: MTCNN
 ## (3). add face alignment interface
