@@ -21,18 +21,6 @@ CMakeFiles/main.dir/src/face_detect.cpp.o
  /home/gli-ai/workspace/ncnn_106landmarks/src/face_detect.cpp
  /home/gli-ai/workspace/ncnn_106landmarks/src/face_detect.h
 CMakeFiles/main.dir/src/main.cpp.o
- ../include/ncnn/allocator.h
- ../include/ncnn/blob.h
- ../include/ncnn/command.h
- ../include/ncnn/gpu.h
- ../include/ncnn/layer.h
- ../include/ncnn/mat.h
- ../include/ncnn/modelbin.h
- ../include/ncnn/net.h
- ../include/ncnn/option.h
- ../include/ncnn/paramdict.h
- ../include/ncnn/pipeline.h
- ../include/ncnn/platform.h
  /home/gli-ai/workspace/ncnn_106landmarks/src/common.h
  /home/gli-ai/workspace/ncnn_106landmarks/src/face_detect.h
  /home/gli-ai/workspace/ncnn_106landmarks/src/main.cpp

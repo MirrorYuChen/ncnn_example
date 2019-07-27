@@ -20,18 +20,6 @@ CMakeFiles/main.dir/src/face_detect.cpp.o: ../src/common.h
 CMakeFiles/main.dir/src/face_detect.cpp.o: ../src/face_detect.cpp
 CMakeFiles/main.dir/src/face_detect.cpp.o: ../src/face_detect.h
 
-CMakeFiles/main.dir/src/main.cpp.o: ../include/ncnn/allocator.h
-CMakeFiles/main.dir/src/main.cpp.o: ../include/ncnn/blob.h
-CMakeFiles/main.dir/src/main.cpp.o: ../include/ncnn/command.h
-CMakeFiles/main.dir/src/main.cpp.o: ../include/ncnn/gpu.h
-CMakeFiles/main.dir/src/main.cpp.o: ../include/ncnn/layer.h
-CMakeFiles/main.dir/src/main.cpp.o: ../include/ncnn/mat.h
-CMakeFiles/main.dir/src/main.cpp.o: ../include/ncnn/modelbin.h
-CMakeFiles/main.dir/src/main.cpp.o: ../include/ncnn/net.h
-CMakeFiles/main.dir/src/main.cpp.o: ../include/ncnn/option.h
-CMakeFiles/main.dir/src/main.cpp.o: ../include/ncnn/paramdict.h
-CMakeFiles/main.dir/src/main.cpp.o: ../include/ncnn/pipeline.h
-CMakeFiles/main.dir/src/main.cpp.o: ../include/ncnn/platform.h
 CMakeFiles/main.dir/src/main.cpp.o: ../src/common.h
 CMakeFiles/main.dir/src/main.cpp.o: ../src/face_detect.h
 CMakeFiles/main.dir/src/main.cpp.o: ../src/main.cpp

@@ -101,3 +101,19 @@ int NMS(const std::vector<FaceInfo>& faces, std::vector<FaceInfo>* result) {
 
 	return 0;
 }
+
+float CalculSimilarity(const std::vector<float>&feature1, const std::vector<float>& feature2) {
+	if (feature1.size() != feature2.size()) {
+		std::cout << "feature size not match." << std::endl;
+		return 10003;
+	}
+	float inner_product = 0.0f;
+	float feature_norm1 = 0.0f;
+	float feature_norm2 = 0.0f;
+	for(int i = 0; i < kFaceFeatureDim; ++i) {
+		inner_product += feature1[i] * feature2[i];
+		feature_norm1 += feature1[i] * feature1[i];
+		feature_norm2 += feature2[i] * feature2[i];
+	}
+	return inner_product / sqrt(feature_norm1) / sqrt(feature_norm2);
+}

@@ -10,9 +10,10 @@ class FaceDetector {
     int Detect(const cv::Mat& img_src, std::vector<FaceInfo>* faces);
 	int ExtractKeypoints(const cv::Mat& img_src,
 		const cv::Rect& face, std::vector<cv::Point>* keypoints);
+    int ExtractFeature(const cv::Mat& img_face, std::vector<float>* feature);
 
  private:
     class Impl;
-    Impl* impl;
+    Impl* impl_;
 
 };

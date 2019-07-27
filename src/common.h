@@ -4,6 +4,8 @@
 #include <vector>
 #include "opencv2/core.hpp"
 
+#define kFaceFeatureDim 128
+
 struct FaceInfo {
 	FaceInfo() {}
 	FaceInfo(const cv::Rect& face, const int& score) {
@@ -31,6 +33,8 @@ int ComputeIOU(const cv::Rect & rect1,
 	const cv::Rect & rect2, float * iou);
 
 int NMS(const std::vector<FaceInfo>& faces, std::vector<FaceInfo> * result);
+
+float CalculSimilarity(const std::vector<float>&feature1, const std::vector<float>& feature2);
 
 #endif // !_COMMON_H_
 
