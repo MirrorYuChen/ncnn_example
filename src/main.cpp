@@ -5,6 +5,8 @@ int TestLandmark(int argc, char* argv[]) {
 	cv::Mat img_src = cv::imread("../images/4.jpg");
 	const char* root_path = "../models";
 
+	double start = static_cast<double>(cv::getTickCount());
+	
 	FaceDetector face_detector;
 	face_detector.LoadModel(root_path);
 	std::vector<FaceInfo> faces;
@@ -18,6 +20,10 @@ int TestLandmark(int argc, char* argv[]) {
 			cv::circle(img_src, keypoints[j], 1, cv::Scalar(0, 0, 255), 1);
 		}
 	}
+
+	double end = static_cast<double>(cv::getTickCount());
+	double time_cost = (end - start) / cv::getTickFrequency() * 1000;
+	std::cout << "time cost: " << time_cost << "ms" << std::endl;
 	cv::imwrite("../images/result.jpg", img_src);
 	cv::imshow("result", img_src);
 	cv::waitKey(0);
@@ -30,6 +36,7 @@ int TestRecognize(int argc, char* argv[]) {
 	cv::Mat img_src = cv::imread("../images/4.jpg");
 	const char* root_path = "../models";
 
+	double start = static_cast<double>(cv::getTickCount());
 	FaceDetector face_detector;
 	face_detector.LoadModel(root_path);
 	std::vector<FaceInfo> faces;
@@ -42,6 +49,10 @@ int TestRecognize(int argc, char* argv[]) {
 	face_detector.ExtractFeature(face1, &feature1);
 	face_detector.ExtractFeature(face2, &feature2);
 	float sim = CalculSimilarity(feature1, feature2);
+
+	double end = static_cast<double>(cv::getTickCount());
+	double time_cost = (end - start) / cv::getTickFrequency() * 1000;
+	std::cout << "time cost: " << time_cost << "ms" << std::endl;
 
 	for (int i = 0; i < static_cast<int>(faces.size()); ++i) {
 		cv::Rect face = faces.at(i).face_;
@@ -57,6 +68,6 @@ int TestRecognize(int argc, char* argv[]) {
 }
 
 int main(int argc, char* argv[]) {
-	// return TestLandmark(argc, argv);
-	return TestRecognize(argc, argv);
+	return TestLandmark(argc, argv);
+	// return TestRecognize(argc, argv);
 }

@@ -8,6 +8,9 @@ int RatioAnchors(const cv::Rect & anchor,
 	cv::Point center = cv::Point(anchor.x + (anchor.width - 1) * 0.5f,
 		anchor.y + (anchor.height - 1) * 0.5f);
 	float anchor_size = anchor.width * anchor.height;
+#if defined(_OPENMP)
+#pragma omp parallel for num_threads(threads_num)
+#endif
 	for (int i = 0; i < static_cast<int>(ratios.size()); ++i) {
 		float ratio = ratios.at(i);
 		float anchor_size_ratio = anchor_size / ratio;
@@ -26,6 +29,10 @@ int RatioAnchors(const cv::Rect & anchor,
 int ScaleAnchors(const std::vector<cv::Rect>& ratio_anchors,
 	const std::vector<float>& scales, std::vector<cv::Rect>* anchors) {
 	anchors->clear();
+#if defined(_OPENMP)
+std::cout << "use openmp." << std::endl;
+#pragma omp parallel for num_threads(threads_num)
+#endif
 	for (int i = 0; i < static_cast<int>(ratio_anchors.size()); ++i) {
 		cv::Rect anchor = ratio_anchors.at(i);
 		cv::Point2f center = cv::Point2f(anchor.x + anchor.width * 0.5f,
@@ -110,6 +117,9 @@ float CalculSimilarity(const std::vector<float>&feature1, const std::vector<floa
 	float inner_product = 0.0f;
 	float feature_norm1 = 0.0f;
 	float feature_norm2 = 0.0f;
+#if defined(_OPENMP)
+#pragma omp parallel for num_threads(threads_num)
+#endif
 	for(int i = 0; i < kFaceFeatureDim; ++i) {
 		inner_product += feature1[i] * feature2[i];
 		feature_norm1 += feature1[i] * feature1[i];

@@ -12,6 +12,9 @@ class FaceDetector::Impl {
 			 frnet_(new ncnn::Net()),
              initialized(false) {
 		ncnn::create_gpu_instance();	
+		fdnet_->opt.use_vulkan_compute = 1;
+		flnet_->opt.use_vulkan_compute = 1;
+		frnet_->opt.use_vulkan_compute = 1;
 	}
     ~Impl() {
 		fdnet_->clear();
@@ -42,7 +45,6 @@ class FaceDetector::Impl {
 int FaceDetector::Impl::LoadModel(const char * root_path) {
 	std::string fd_param = std::string(root_path) + "/fd.param";
 	std::string fd_bin = std::string(root_path) + "/fd.bin";
-	fdnet_->opt.use_vulkan_compute = 1;
 	if (fdnet_->load_param(fd_param.c_str()) == -1 ||
 		fdnet_->load_model(fd_bin.c_str()) == -1) {
 		std::cout << "load face detect model failed." << std::endl;
@@ -50,7 +52,6 @@ int FaceDetector::Impl::LoadModel(const char * root_path) {
 	}
 	std::string fl_param = std::string(root_path) + "/fl.param";
 	std::string fl_bin = std::string(root_path) + "/fl.bin";
-	flnet_->opt.use_vulkan_compute = 1;
 	if (flnet_->load_param(fl_param.c_str()) == -1 ||
 		flnet_->load_model(fl_bin.c_str()) == -1) {
 		std::cout << "load face landmark model failed." << std::endl;
@@ -59,7 +60,6 @@ int FaceDetector::Impl::LoadModel(const char * root_path) {
 
 	std::string fr_param = std::string(root_path) + "/fr.param";
 	std::string fr_bin = std::string(root_path) + "/fr.bin";
-	frnet_->opt.use_vulkan_compute = 1;
 	if (frnet_->load_param(fr_param.c_str()) == -1 ||
 	frnet_->load_model(fr_bin.c_str()) == -1) {
 		std::cout << "load face recognize model failed." << std::endl;
@@ -122,6 +122,9 @@ int FaceDetector::Impl::Detect(const cv::Mat & img_src,
 		int width = class_mat.w;
 		int height = class_mat.h;
 		int anchor_num = static_cast<int>(anchors.size());
+#if defined(_OPENMP)
+#pragma omp parallel for num_threads(threads_num)
+#endif
 		for (int h = 0; h < height; ++h)	{
 			for (int w = 0; w < width; ++w) {
 				int index = h * width + w;
