@@ -35,7 +35,8 @@
 ### >mkdir build && cd build && cmake .. && make -j3
 ### >./main
 
-# **4.add extract face feature interface based on mobilefacenet**
+# **4.add extract feature interface based on mobilefacenet**
+# **5.use openmp to optimize for loops**
 # **TODO:**
 ## (1). Optimaize the code（Openmp）
 ## (2). add face detection: MTCNN
