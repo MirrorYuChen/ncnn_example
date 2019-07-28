@@ -38,6 +38,5 @@
 # **4.add mobilefacenet**
 # **5.use openmp to optimize for loops**
 # **TODO:**
-## (1). Optimaize the code: openmp for multi detect net
-## (2). add face detection: MTCNN
-## (3). add face alignment interface
+## (1). add face detection: MTCNN 
+## (2). add face alignment interface
