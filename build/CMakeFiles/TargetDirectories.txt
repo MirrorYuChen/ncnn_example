@@ -1,3 +1,0 @@
-/home/mirror/workspace/ncnn_106landmarks/build/CMakeFiles/rebuild_cache.dir
-/home/mirror/workspace/ncnn_106landmarks/build/CMakeFiles/main.dir
-/home/mirror/workspace/ncnn_106landmarks/build/CMakeFiles/edit_cache.dir

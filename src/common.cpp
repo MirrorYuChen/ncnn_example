@@ -30,7 +30,6 @@ int ScaleAnchors(const std::vector<cv::Rect>& ratio_anchors,
 	const std::vector<float>& scales, std::vector<cv::Rect>* anchors) {
 	anchors->clear();
 #if defined(_OPENMP)
-std::cout << "use openmp." << std::endl;
 #pragma omp parallel for num_threads(threads_num)
 #endif
 	for (int i = 0; i < static_cast<int>(ratio_anchors.size()); ++i) {

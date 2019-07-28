@@ -193,6 +193,9 @@ int FaceDetector::Impl::ExtractKeypoints(const cv::Mat & img_src,
 	ex.input("data", in);
 	ncnn::Mat out;
 	ex.extract("bn6_3", out);
+#if defined(_OPENMP)
+#pragma omp parallel for num_threads(threads_num)
+#endif
 	for (int i = 0; i < 106; ++i) {
 		float x = abs(out[2 * i] * img_face.cols) + face.x;
 		float y = abs(out[2 * i + 1] * img_face.rows) + face.y;
