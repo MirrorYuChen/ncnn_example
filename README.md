@@ -35,7 +35,7 @@
 ### >mkdir build && cd build && cmake .. && make -j3
 ### >./main
 
-# **4.add extract feature interface based on mobilefacenet**
+# **4.add mobilefacenet**
 # **5.use openmp to optimize for loops**
 # **TODO:**
 ## (1). Optimaize the code: openmp for multi detect net
