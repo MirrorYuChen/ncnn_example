@@ -17,9 +17,9 @@ class FaceDetector::Impl {
 		// frnet_->opt.use_vulkan_compute = 1;
 	}
     ~Impl() {
-		// fdnet_->clear();
-		// flnet_->clear();
-		// frnet_->clear();
+		fdnet_->clear();
+		flnet_->clear();
+		frnet_->clear();
 		// ncnn::destroy_gpu_instance();
 	}
 
