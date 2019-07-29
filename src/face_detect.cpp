@@ -11,16 +11,16 @@ class FaceDetector::Impl {
              flnet_(new ncnn::Net()),
 			 frnet_(new ncnn::Net()),
              initialized(false) {
-		ncnn::create_gpu_instance();	
-		fdnet_->opt.use_vulkan_compute = 1;
-		flnet_->opt.use_vulkan_compute = 1;
-		frnet_->opt.use_vulkan_compute = 1;
+		// ncnn::create_gpu_instance();	
+		// fdnet_->opt.use_vulkan_compute = 1;
+		// flnet_->opt.use_vulkan_compute = 1;
+		// frnet_->opt.use_vulkan_compute = 1;
 	}
     ~Impl() {
-		fdnet_->clear();
-		flnet_->clear();
-		frnet_->clear();
-		ncnn::destroy_gpu_instance();
+		// fdnet_->clear();
+		// flnet_->clear();
+		// frnet_->clear();
+		// ncnn::destroy_gpu_instance();
 	}
 
     ncnn::Net* fdnet_;
@@ -193,9 +193,7 @@ int FaceDetector::Impl::ExtractKeypoints(const cv::Mat & img_src,
 	ex.input("data", in);
 	ncnn::Mat out;
 	ex.extract("bn6_3", out);
-#if defined(_OPENMP)
-#pragma omp parallel for num_threads(threads_num)
-#endif
+
 	for (int i = 0; i < 106; ++i) {
 		float x = abs(out[2 * i] * img_face.cols) + face.x;
 		float y = abs(out[2 * i + 1] * img_face.rows) + face.y;
