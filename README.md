@@ -52,7 +52,7 @@ start keypoints extract.
 keypoints extract end.
 time cost: 137.495ms
 '
-## **use valkan:**
+## **use vulkan:**
 '
 [0 NVIDIA Tegra X1 (nvgpu)]  queueC=0[16]  queueT=0[16]  memU=2  memDL=2  memHV=2
 [0 NVIDIA Tegra X1 (nvgpu)]  fp16p=1  fp16s=1  fp16a=0  int8s=1  int8a=0
