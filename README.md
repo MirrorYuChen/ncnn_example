@@ -73,3 +73,5 @@ time cost: 553.328ms
 # **TODO:**
 ## (1). add face detection: MTCNN 
 ## (2). add face alignment interface
+## (3). add face recognize database
+## (4). add face track
