@@ -122,9 +122,6 @@ int FaceDetector::Impl::Detect(const cv::Mat & img_src,
 		int width = class_mat.w;
 		int height = class_mat.h;
 		int anchor_num = static_cast<int>(anchors.size());
-#if defined(_OPENMP)
-#pragma omp parallel for num_threads(threads_num)
-#endif
 		for (int h = 0; h < height; ++h)	{
 			for (int w = 0; w < width; ++w) {
 				int index = h * width + w;
