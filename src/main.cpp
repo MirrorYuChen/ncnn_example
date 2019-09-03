@@ -67,7 +67,36 @@ int TestRecognize(int argc, char* argv[]) {
 
 }
 
+int TestAlignFace(int argc, char* argv[]) {
+	cv::Mat img_src = cv::imread("../images/4.jpg");
+	const char* root_path = "../models";
+
+	double start = static_cast<double>(cv::getTickCount());
+	
+	FaceDetector face_detector;
+	face_detector.LoadModel(root_path);
+	std::vector<FaceInfo> faces;
+	face_detector.Detect(img_src, &faces);
+	for (int i = 0; i < static_cast<int>(faces.size()); ++i) {
+		cv::Rect face = faces.at(i).face_;
+		std::vector<cv::Point2f> keypoints;
+		face_detector.ExtractKeypoints(img_src, face, &keypoints);
+		cv::Mat face_aligned;
+		face_detector.AlignFace(img_src, keypoints, &face_aligned);
+		std::string name = std::to_string(i) + ".jpg";
+		cv::imwrite(name.c_str(), face_aligned);
+		for (int j = 0; j < static_cast<int>(keypoints.size()); ++j) {
+			cv::circle(img_src, keypoints[j], 1, cv::Scalar(0, 0, 255), 1);
+		}
+		cv::rectangle(img_src, face, cv::Scalar(0, 255, 0), 2);
+	}
+	cv::imshow("result", img_src);
+	cv::waitKey(0);
+
+}
+
 int main(int argc, char* argv[]) {
-	return TestLandmark(argc, argv);
+	// return TestLandmark(argc, argv);
 	// return TestRecognize(argc, argv);
+	return TestAlignFace(argc, argv);
 }
