@@ -3,41 +3,42 @@
 #include <string>
 #include "ncnn/net.h"
 #include "common.h"
+#include "preprocess.h"
 
 using ANCHORS = std::vector<cv::Rect>;
 class FaceDetector::Impl {
- public:
-    Impl() : fdnet_(new ncnn::Net()),
-             flnet_(new ncnn::Net()),
-			 frnet_(new ncnn::Net()),
-             initialized(false) {
+public:
+	Impl() : fdnet_(new ncnn::Net()),
+		flnet_(new ncnn::Net()),
+		frnet_(new ncnn::Net()),
+		initialized(false) {
 		// ncnn::create_gpu_instance();	
 		// fdnet_->opt.use_vulkan_compute = 1;
 		// flnet_->opt.use_vulkan_compute = 1;
 		// frnet_->opt.use_vulkan_compute = 1;
 	}
-    ~Impl() {
+	~Impl() {
 		fdnet_->clear();
 		flnet_->clear();
 		frnet_->clear();
 		// ncnn::destroy_gpu_instance();
 	}
 
-    ncnn::Net* fdnet_;
-    ncnn::Net* flnet_;
+	ncnn::Net* fdnet_;
+	ncnn::Net* flnet_;
 	ncnn::Net* frnet_;
-    bool initialized;
+	bool initialized;
 
 	const float flMeanVals[3] = { 127.5f, 127.5f, 127.5f };
 	const float flNormVals[3] = { 0.0078125f, 0.0078125f, 0.0078125f };
-	const int RPNs[3] = {32, 16, 8};
-    int LoadModel(const char* root_path);
+	const int RPNs[3] = { 32, 16, 8 };
+	int LoadModel(const char* root_path);
 	int Detect(const cv::Mat& img_src, std::vector<FaceInfo>* faces);
 	int ExtractKeypoints(const cv::Mat& img_src,
-		const cv::Rect& face, std::vector<cv::Point>* keypoints);
+		const cv::Rect& face, std::vector<cv::Point2f>* keypoints);
 	int ExtractFeature(const cv::Mat& img_face, std::vector<float>* feature);
 
- private:
+private:
 	std::vector<ANCHORS> anchors_generated_;
 
 };
@@ -61,7 +62,7 @@ int FaceDetector::Impl::LoadModel(const char * root_path) {
 	std::string fr_param = std::string(root_path) + "/fr.param";
 	std::string fr_bin = std::string(root_path) + "/fr.bin";
 	if (frnet_->load_param(fr_param.c_str()) == -1 ||
-	frnet_->load_model(fr_bin.c_str()) == -1) {
+		frnet_->load_model(fr_bin.c_str()) == -1) {
 		std::cout << "load face recognize model failed." << std::endl;
 		return 10000;
 	}
@@ -122,7 +123,7 @@ int FaceDetector::Impl::Detect(const cv::Mat & img_src,
 		int width = class_mat.w;
 		int height = class_mat.h;
 		int anchor_num = static_cast<int>(anchors.size());
-		for (int h = 0; h < height; ++h)	{
+		for (int h = 0; h < height; ++h) {
 			for (int w = 0; w < width; ++w) {
 				int index = h * width + w;
 				for (int a = 0; a < anchor_num; ++a) {
@@ -131,7 +132,7 @@ int FaceDetector::Impl::Detect(const cv::Mat & img_src,
 						continue;
 					}
 					scores.push_back(score);
-					cv::Rect box = cv::Rect(w * RPNs[i]+ anchors[a].x,
+					cv::Rect box = cv::Rect(w * RPNs[i] + anchors[a].x,
 						h * RPNs[i] + anchors[a].y,
 						anchors[a].width,
 						anchors[a].height);
@@ -148,7 +149,7 @@ int FaceDetector::Impl::Detect(const cv::Mat & img_src,
 					float curr_height = std::exp(delta_h) * (box.height + 1);
 					cv::Rect curr_box = cv::Rect(
 						center.x - curr_width * 0.5f,
-						center.y - curr_height* 0.5f,
+						center.y - curr_height * 0.5f,
 						curr_width,
 						curr_height);
 					curr_box.x = MAX(curr_box.x * factor_x, 0);
@@ -171,7 +172,7 @@ int FaceDetector::Impl::Detect(const cv::Mat & img_src,
 }
 
 int FaceDetector::Impl::ExtractKeypoints(const cv::Mat & img_src,
-	const cv::Rect & face, std::vector<cv::Point>* keypoints) {
+	const cv::Rect & face, std::vector<cv::Point2f>* keypoints) {
 	std::cout << "start keypoints extract." << std::endl;
 	if (!initialized) {
 		std::cout << "model uninitialized." << std::endl;
@@ -194,14 +195,14 @@ int FaceDetector::Impl::ExtractKeypoints(const cv::Mat & img_src,
 	for (int i = 0; i < 106; ++i) {
 		float x = abs(out[2 * i] * img_face.cols) + face.x;
 		float y = abs(out[2 * i + 1] * img_face.rows) + face.y;
-		keypoints->push_back(cv::Point(x, y));
+		keypoints->push_back(cv::Point2f(x, y));
 	}
 	std::cout << "keypoints extract end." << std::endl;
 	return 0;
 }
 
 int FaceDetector::Impl::ExtractFeature(const cv::Mat& img_face,
-    std::vector<float>* feature) {
+	std::vector<float>* feature) {
 	std::cout << "start extract feature." << std::endl;
 	feature->clear();
 	if (!initialized) {
@@ -246,10 +247,27 @@ int FaceDetector::Detect(const cv::Mat & img_src, std::vector<FaceInfo>* faces) 
 }
 
 int FaceDetector::ExtractKeypoints(const cv::Mat & img_src,
-	const cv::Rect & face, std::vector<cv::Point>* keypoints) {
+	const cv::Rect & face, std::vector<cv::Point2f>* keypoints) {
 	return impl_->ExtractKeypoints(img_src, face, keypoints);
 }
 
 int FaceDetector::ExtractFeature(const cv::Mat& img_face, std::vector<float>* feature) {
 	return impl_->ExtractFeature(img_face, feature);
+}
+
+int FaceDetector::AlignFace(const cv::Mat& img_src,
+	const std::vector<cv::Point2f>& keypoints, cv::Mat* face_aligned) {
+	std::cout << "start align face." << std::endl;
+	if (img_src.empty()) {
+		std::cout << "input empty." << std::endl;
+		return 10001;
+	}
+	if (keypoints.size() == 0) {
+		std::cout << "keypoints empty." << std::endl;
+		return 10001;
+	}
+
+	*face_aligned = Align(img_src, keypoints);
+
+	std::cout << "end align face." << std::endl;
 }
