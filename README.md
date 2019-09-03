@@ -77,7 +77,6 @@ time cost: 553.328ms
 ## https://github.com/deepinsight/insightface/issues/333
 
 # **TODO:**
-## (1). add face detection: MTCNN 
-## (2). add face alignment interface
-## (3). add face recognize database
-## (4). add face track
+## (1). add face recognize database
+## (2). add face track
+
