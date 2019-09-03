@@ -70,6 +70,12 @@ time cost: 553.328ms
 '
 ## **why so strange?**
 
+# **6.add face alignment interface**
+## **the interface refer to the project insightface:**
+## https://github.com/deepinsight/insightface/tree/master/cpp-align
+## **and the issue:**
+## https://github.com/deepinsight/insightface/issues/333
+
 # **TODO:**
 ## (1). add face detection: MTCNN 
 ## (2). add face alignment interface
