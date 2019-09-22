@@ -1,5 +1,5 @@
 #include "opencv2/opencv.hpp"
-#include "face_detect.h"
+#include "face_engine.h"
 
 int TestLandmark(int argc, char* argv[]) {
 	cv::Mat img_src = cv::imread("../images/4.jpg");
@@ -7,15 +7,15 @@ int TestLandmark(int argc, char* argv[]) {
 
 	double start = static_cast<double>(cv::getTickCount());
 	
-	FaceDetector face_detector;
-	face_detector.LoadModel(root_path);
+	FaceEngine face_engine;
+	face_engine.LoadModel(root_path);
 	std::vector<FaceInfo> faces;
-	face_detector.Detect(img_src, &faces);
+	face_engine.Detect(img_src, &faces);
 	for (int i = 0; i < static_cast<int>(faces.size()); ++i) {
 		cv::Rect face = faces.at(i).face_;
 		cv::rectangle(img_src, face, cv::Scalar(0, 255, 0), 2);
 		std::vector<cv::Point2f> keypoints;
-		face_detector.ExtractKeypoints(img_src, face, &keypoints);
+		face_engine.ExtractKeypoints(img_src, face, &keypoints);
 		for (int j = 0; j < static_cast<int>(keypoints.size()); ++j) {
 			cv::circle(img_src, keypoints[j], 1, cv::Scalar(0, 0, 255), 1);
 		}
@@ -37,17 +37,17 @@ int TestRecognize(int argc, char* argv[]) {
 	const char* root_path = "../models";
 
 	double start = static_cast<double>(cv::getTickCount());
-	FaceDetector face_detector;
-	face_detector.LoadModel(root_path);
+	FaceEngine face_engine;
+	face_engine.LoadModel(root_path);
 	std::vector<FaceInfo> faces;
-	face_detector.Detect(img_src, &faces);
+	face_engine.Detect(img_src, &faces);
 
 
 	cv::Mat face1 = img_src(faces[0].face_).clone();
 	cv::Mat face2 = img_src(faces[1].face_).clone();
 	std::vector<float> feature1, feature2;
-	face_detector.ExtractFeature(face1, &feature1);
-	face_detector.ExtractFeature(face2, &feature2);
+	face_engine.ExtractFeature(face1, &feature1);
+	face_engine.ExtractFeature(face2, &feature2);
 	float sim = CalculSimilarity(feature1, feature2);
 
 	double end = static_cast<double>(cv::getTickCount());
@@ -73,16 +73,16 @@ int TestAlignFace(int argc, char* argv[]) {
 
 	double start = static_cast<double>(cv::getTickCount());
 	
-	FaceDetector face_detector;
-	face_detector.LoadModel(root_path);
+	FaceEngine face_engine;
+	face_engine.LoadModel(root_path);
 	std::vector<FaceInfo> faces;
-	face_detector.Detect(img_src, &faces);
+	face_engine.Detect(img_src, &faces);
 	for (int i = 0; i < static_cast<int>(faces.size()); ++i) {
 		cv::Rect face = faces.at(i).face_;
 		std::vector<cv::Point2f> keypoints;
-		face_detector.ExtractKeypoints(img_src, face, &keypoints);
+		face_engine.ExtractKeypoints(img_src, face, &keypoints);
 		cv::Mat face_aligned;
-		face_detector.AlignFace(img_src, keypoints, &face_aligned);
+		face_engine.AlignFace(img_src, keypoints, &face_aligned);
 		std::string name = std::to_string(i) + ".jpg";
 		cv::imwrite(name.c_str(), face_aligned);
 		for (int j = 0; j < static_cast<int>(keypoints.size()); ++j) {
