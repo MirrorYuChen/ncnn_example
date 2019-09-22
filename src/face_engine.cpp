@@ -1,4 +1,4 @@
-#include "face_detect.h"
+#include "face_engine.h"
 #include <iostream>
 #include <string>
 #include "ncnn/net.h"
@@ -6,7 +6,7 @@
 #include "aligner.h"
 
 using ANCHORS = std::vector<cv::Rect>;
-class FaceDetector::Impl {
+class FaceEngine::Impl {
 public:
 	Impl() : fdnet_(new ncnn::Net()),
 		flnet_(new ncnn::Net()),
@@ -46,7 +46,7 @@ private:
 
 };
 
-int FaceDetector::Impl::LoadModel(const char * root_path) {
+int FaceEngine::Impl::LoadModel(const char * root_path) {
 	std::string fd_param = std::string(root_path) + "/fd.param";
 	std::string fd_bin = std::string(root_path) + "/fd.bin";
 	if (fdnet_->load_param(fd_param.c_str()) == -1 ||
@@ -88,7 +88,7 @@ int FaceDetector::Impl::LoadModel(const char * root_path) {
 	return 0;
 }
 
-int FaceDetector::Impl::Detect(const cv::Mat & img_src,
+int FaceEngine::Impl::Detect(const cv::Mat & img_src,
 	std::vector<FaceInfo>* faces) {
 	faces->clear();
 	std::cout << "start face detect." << std::endl;
@@ -174,7 +174,7 @@ int FaceDetector::Impl::Detect(const cv::Mat & img_src,
 	return 0;
 }
 
-int FaceDetector::Impl::ExtractKeypoints(const cv::Mat & img_src,
+int FaceEngine::Impl::ExtractKeypoints(const cv::Mat & img_src,
 	const cv::Rect & face, std::vector<cv::Point2f>* keypoints) {
 	std::cout << "start keypoints extract." << std::endl;
 	if (!initialized) {
@@ -204,7 +204,7 @@ int FaceDetector::Impl::ExtractKeypoints(const cv::Mat & img_src,
 	return 0;
 }
 
-int FaceDetector::Impl::ExtractFeature(const cv::Mat& img_face,
+int FaceEngine::Impl::ExtractFeature(const cv::Mat& img_face,
 	std::vector<float>* feature) {
 	std::cout << "start extract feature." << std::endl;
 	feature->clear();
@@ -231,34 +231,34 @@ int FaceDetector::Impl::ExtractFeature(const cv::Mat& img_face,
 	return 0;
 }
 
-FaceDetector::FaceDetector() {
-	impl_ = new FaceDetector::Impl();
+FaceEngine::FaceEngine() {
+	impl_ = new FaceEngine::Impl();
 }
 
-FaceDetector::~FaceDetector() {
+FaceEngine::~FaceEngine() {
 	if (impl_) {
 		delete impl_;
 	}
 }
 
-int FaceDetector::LoadModel(const char * root_path) {
+int FaceEngine::LoadModel(const char * root_path) {
 	return impl_->LoadModel(root_path);
 }
 
-int FaceDetector::Detect(const cv::Mat & img_src, std::vector<FaceInfo>* faces) {
+int FaceEngine::Detect(const cv::Mat & img_src, std::vector<FaceInfo>* faces) {
 	return impl_->Detect(img_src, faces);
 }
 
-int FaceDetector::ExtractKeypoints(const cv::Mat & img_src,
+int FaceEngine::ExtractKeypoints(const cv::Mat & img_src,
 	const cv::Rect & face, std::vector<cv::Point2f>* keypoints) {
 	return impl_->ExtractKeypoints(img_src, face, keypoints);
 }
 
-int FaceDetector::ExtractFeature(const cv::Mat& img_face, std::vector<float>* feature) {
+int FaceEngine::ExtractFeature(const cv::Mat& img_face, std::vector<float>* feature) {
 	return impl_->ExtractFeature(img_face, feature);
 }
 
-int FaceDetector::AlignFace(const cv::Mat& img_src,
+int FaceEngine::AlignFace(const cv::Mat& img_src,
 	const std::vector<cv::Point2f>& keypoints, cv::Mat* face_aligned) {
 	return impl_->aligner_->Align(img_src, keypoints, face_aligned);
 }
