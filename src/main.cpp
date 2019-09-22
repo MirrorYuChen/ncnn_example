@@ -14,7 +14,7 @@ int TestLandmark(int argc, char* argv[]) {
 	for (int i = 0; i < static_cast<int>(faces.size()); ++i) {
 		cv::Rect face = faces.at(i).face_;
 		cv::rectangle(img_src, face, cv::Scalar(0, 255, 0), 2);
-		std::vector<cv::Point> keypoints;
+		std::vector<cv::Point2f> keypoints;
 		face_detector.ExtractKeypoints(img_src, face, &keypoints);
 		for (int j = 0; j < static_cast<int>(keypoints.size()); ++j) {
 			cv::circle(img_src, keypoints[j], 1, cv::Scalar(0, 0, 255), 1);
