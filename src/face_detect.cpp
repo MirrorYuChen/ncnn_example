@@ -3,7 +3,7 @@
 #include <string>
 #include "ncnn/net.h"
 #include "common.h"
-#include "preprocess.h"
+#include "aligner.h"
 
 using ANCHORS = std::vector<cv::Rect>;
 class FaceDetector::Impl {
@@ -11,6 +11,7 @@ public:
 	Impl() : fdnet_(new ncnn::Net()),
 		flnet_(new ncnn::Net()),
 		frnet_(new ncnn::Net()),
+		aligner_(new Aligner()),
 		initialized(false) {
 		// ncnn::create_gpu_instance();	
 		// fdnet_->opt.use_vulkan_compute = 1;
@@ -27,6 +28,8 @@ public:
 	ncnn::Net* fdnet_;
 	ncnn::Net* flnet_;
 	ncnn::Net* frnet_;
+	Aligner * aligner_;
+
 	bool initialized;
 
 	const float flMeanVals[3] = { 127.5f, 127.5f, 127.5f };
@@ -37,8 +40,7 @@ public:
 	int ExtractKeypoints(const cv::Mat& img_src,
 		const cv::Rect& face, std::vector<cv::Point2f>* keypoints);
 	int ExtractFeature(const cv::Mat& img_face, std::vector<float>* feature);
-	int AlignFace(const cv::Mat& img_src, const std::vector<cv::Point2f>& keypoints, cv::Mat* face_aligned);
-
+	
 private:
 	std::vector<ANCHORS> anchors_generated_;
 
@@ -229,23 +231,6 @@ int FaceDetector::Impl::ExtractFeature(const cv::Mat& img_face,
 	return 0;
 }
 
-int FaceDetector::Impl::AlignFace(const cv::Mat& img_src,
-	const std::vector<cv::Point2f>& keypoints, cv::Mat* face_aligned) {
-	std::cout << "start align face." << std::endl;
-	if (img_src.empty()) {
-		std::cout << "input empty." << std::endl;
-		return 10001;
-	}
-	if (keypoints.size() == 0) {
-		std::cout << "keypoints empty." << std::endl;
-		return 10001;
-	}
-
-	*face_aligned = Align(img_src, keypoints);
-
-	std::cout << "end align face." << std::endl;	
-}
-
 FaceDetector::FaceDetector() {
 	impl_ = new FaceDetector::Impl();
 }
@@ -275,5 +260,5 @@ int FaceDetector::ExtractFeature(const cv::Mat& img_face, std::vector<float>* fe
 
 int FaceDetector::AlignFace(const cv::Mat& img_src,
 	const std::vector<cv::Point2f>& keypoints, cv::Mat* face_aligned) {
-	return impl_->AlignFace(img_src, keypoints, face_aligned);
+	return impl_->aligner_->Align(img_src, keypoints, face_aligned);
 }
