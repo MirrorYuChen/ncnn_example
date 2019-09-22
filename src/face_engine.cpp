@@ -5,11 +5,12 @@
 #include "common.h"
 #include "aligner.h"
 #include "retinaface.h"
+#include "zq_landmarker.h"
 
 class FaceEngine::Impl {
 public:
 	Impl() : detector_(new RetinaFace()),
-		flnet_(new ncnn::Net()),
+		landmarker_(new ZQLandmarker()),
 		frnet_(new ncnn::Net()),
 		aligner_(new Aligner()),
 		initialized(false) {
@@ -19,13 +20,12 @@ public:
 		// frnet_->opt.use_vulkan_compute = 1;
 	}
 	~Impl() {
-		flnet_->clear();
 		frnet_->clear();
 		// ncnn::destroy_gpu_instance();
 	}
 
 	Detector* detector_;
-	ncnn::Net* flnet_;
+	Landmarker* landmarker_;
 	ncnn::Net* frnet_;
 	Aligner * aligner_;
 
@@ -35,8 +35,6 @@ public:
 	const float flNormVals[3] = { 0.0078125f, 0.0078125f, 0.0078125f };
 	const int RPNs[3] = { 32, 16, 8 };
 	int LoadModel(const char* root_path);
-	int ExtractKeypoints(const cv::Mat& img_src,
-		const cv::Rect& face, std::vector<cv::Point2f>* keypoints);
 	int ExtractFeature(const cv::Mat& img_face, std::vector<float>* feature);
 
 };
@@ -46,11 +44,7 @@ int FaceEngine::Impl::LoadModel(const char * root_path) {
 		return 10000;
 	}
 
-	std::string fl_param = std::string(root_path) + "/fl.param";
-	std::string fl_bin = std::string(root_path) + "/fl.bin";
-	if (flnet_->load_param(fl_param.c_str()) == -1 ||
-		flnet_->load_model(fl_bin.c_str()) == -1) {
-		std::cout << "load face landmark model failed." << std::endl;
+	if (landmarker_->LoadModel(root_path) != 0)	{
 		return 10000;
 	}
 
@@ -63,36 +57,6 @@ int FaceEngine::Impl::LoadModel(const char * root_path) {
 	}
 
 	initialized = true;
-	return 0;
-}
-
-int FaceEngine::Impl::ExtractKeypoints(const cv::Mat & img_src,
-	const cv::Rect & face, std::vector<cv::Point2f>* keypoints) {
-	std::cout << "start keypoints extract." << std::endl;
-	if (!initialized) {
-		std::cout << "model uninitialized." << std::endl;
-		return 10000;
-	}
-	if (img_src.empty()) {
-		std::cout << "input empty." << std::endl;
-		return 10001;
-	}
-	keypoints->clear();
-	cv::Mat img_face = img_src(face).clone();
-	ncnn::Extractor ex = flnet_->create_extractor();
-	ncnn::Mat in = ncnn::Mat::from_pixels_resize(img_face.data,
-		ncnn::Mat::PIXEL_BGR, img_face.cols, img_face.rows, 112, 112);
-	in.substract_mean_normalize(flMeanVals, flNormVals);
-	ex.input("data", in);
-	ncnn::Mat out;
-	ex.extract("bn6_3", out);
-
-	for (int i = 0; i < 106; ++i) {
-		float x = abs(out[2 * i] * img_face.cols) + face.x;
-		float y = abs(out[2 * i + 1] * img_face.rows) + face.y;
-		keypoints->push_back(cv::Point2f(x, y));
-	}
-	std::cout << "keypoints extract end." << std::endl;
 	return 0;
 }
 
@@ -143,7 +107,7 @@ int FaceEngine::Detect(const cv::Mat & img_src, std::vector<FaceInfo>* faces) {
 
 int FaceEngine::ExtractKeypoints(const cv::Mat & img_src,
 	const cv::Rect & face, std::vector<cv::Point2f>* keypoints) {
-	return impl_->ExtractKeypoints(img_src, face, keypoints);
+	return impl_->landmarker_->ExtractKeypoints(img_src, face, keypoints);
 }
 
 int FaceEngine::ExtractFeature(const cv::Mat& img_face, std::vector<float>* feature) {

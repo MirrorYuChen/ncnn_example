@@ -44,7 +44,7 @@ int RetinaFace::Detect(const cv::Mat & img_src,
 	std::cout << "start face detect." << std::endl;
 	faces->clear();
 	if (!initialized) {
-		std::cout << "face detect model uninitialized." << std::endl;
+		std::cout << "retinaface detector model uninitialized." << std::endl;
 		return 10000;
 	}
 	if (img_src.empty()) {
