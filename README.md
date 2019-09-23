@@ -76,6 +76,9 @@ time cost: 553.328ms
 ## **and the issue:**
 ## https://github.com/deepinsight/insightface/issues/333
 
+# **7.refactor the project**
+## **reduce the coupling of modules**
+
 # **TODO:**
 ## (1). add face recognize database
 ## (2). add face track
