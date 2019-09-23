@@ -80,6 +80,9 @@ time cost: 553.328ms
 ## **reduce the coupling of modules**
 
 # **8.add mtcnn**
+## **You only need to change line 14 of face_engine.cpp to change face detector.**
+## **For Example:**
+## **detector_(new Mtcnn()) To detector_(new RetinaFace())**
 
 # **TODO:**
 ## (1). add face recognize database
