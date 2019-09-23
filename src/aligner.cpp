@@ -1,20 +1,80 @@
-#include "preprocess.h"
-#include <cmath>
+#include "aligner.h"
+#include <iostream>
+#include "opencv2/core.hpp"
 #include "opencv2/imgproc.hpp"
 
-#include "opencv2/imgproc.hpp"
 
-//Normal face landmark for 112x112,
-float points_dst[5][2] = {
+class Aligner::Impl {
+public:
+	int Align(const cv::Mat& img_src, const std::vector<cv::Point2f>& keypoints, cv::Mat* face_aligned);
+
+private:
+	cv::Mat MeanAxis0(const cv::Mat &src);
+	cv::Mat ElementwiseMinus(const cv::Mat &A, const cv::Mat &B);
+	cv::Mat VarAxis0(const cv::Mat &src);
+	int MatrixRank(cv::Mat M);
+	cv::Mat SimilarTransform(const cv::Mat& src, const cv::Mat& dst);
+
+	float points_dst[5][2] = {
 		{ 30.2946f + 8.0f, 51.6963f },
 		{ 65.5318f + 8.0f, 51.5014f },
 		{ 48.0252f + 8.0f, 71.7366f },
 		{ 33.5493f + 8.0f, 92.3655f },
 		{ 62.7299f + 8.0f, 92.2041f }
+	};
 };
 
 
-cv::Mat MeanAxis0(const cv::Mat &src) {
+Aligner::Aligner() {
+	impl_ = new Impl();
+}
+
+Aligner::~Aligner() {
+	if (impl_) {
+		delete impl_;
+	}
+}
+
+int Aligner::Align(const cv::Mat & img_src,
+	const std::vector<cv::Point2f>& keypoints, cv::Mat * face_aligned) {
+	return impl_->Align(img_src, keypoints, face_aligned);
+}
+
+int Aligner::Impl::Align(const cv::Mat & img_src,
+	const std::vector<cv::Point2f>& keypoints, cv::Mat * face_aligned) {
+	std::cout << "start align face." << std::endl;
+	if (img_src.empty()) {
+		std::cout << "input empty." << std::endl;
+		return 10001;
+	}
+	if (keypoints.size() == 0) {
+		std::cout << "keypoints empty." << std::endl;
+		return 10001;
+	}
+
+	float points_src[5][2] = {
+		{keypoints[104].x, keypoints[104].y},
+		{keypoints[105].x, keypoints[105].y},
+		{keypoints[46].x,  keypoints[46].y },
+		{keypoints[84].x,  keypoints[84].y },
+		{keypoints[90].x, keypoints[90].y}
+	};
+
+	cv::Mat src_mat(5, 2, CV_32FC1, points_src);
+	cv::Mat dst_mat(5, 2, CV_32FC1, points_dst);
+
+	cv::Mat transform = SimilarTransform(src_mat, dst_mat);
+
+	face_aligned->create(112, 112, CV_32FC3);
+
+	cv::Mat transfer_mat = transform(cv::Rect(0, 0, 3, 2));
+	cv::warpAffine(img_src.clone(), *face_aligned, transfer_mat, cv::Size(112, 112), 1, 0, 0);
+
+	std::cout << "end align face." << std::endl;
+	return 0;
+}
+
+cv::Mat Aligner::Impl::MeanAxis0(const cv::Mat & src) {
 	int num = src.rows;
 	int dim = src.cols;
 
@@ -33,9 +93,8 @@ cv::Mat MeanAxis0(const cv::Mat &src) {
 	return output;
 }
 
-cv::Mat ElementwiseMinus(const cv::Mat &A, const cv::Mat &B) {
+cv::Mat Aligner::Impl::ElementwiseMinus(const cv::Mat & A, const cv::Mat & B) {
 	cv::Mat output(A.rows, A.cols, A.type());
-
 	assert(B.cols == A.cols);
 	if (B.cols == A.cols) {
 		for (int i = 0; i < A.rows; i++) {
@@ -44,17 +103,17 @@ cv::Mat ElementwiseMinus(const cv::Mat &A, const cv::Mat &B) {
 			}
 		}
 	}
-	return output;
+
+	return output;	
 }
 
-cv::Mat VarAxis0(const cv::Mat &src) {
+cv::Mat Aligner::Impl::VarAxis0(const cv::Mat & src) {
 	cv::Mat temp_ = ElementwiseMinus(src, MeanAxis0(src));
 	cv::multiply(temp_, temp_, temp_);
 	return MeanAxis0(temp_);
-
 }
 
-int MatrixRank(cv::Mat M) {
+int Aligner::Impl::MatrixRank(cv::Mat M) {
 	cv::Mat w, u, vt;
 	cv::SVD::compute(M, w, u, vt);
 	cv::Mat1b nonZeroSingularValues = w > 0.0001;
@@ -66,7 +125,7 @@ int MatrixRank(cv::Mat M) {
 References: "Least-squares estimation of transformation parameters between two point patterns", Shinji Umeyama, PAMI 1991, DOI: 10.1109/34.88573
 Anthor: Jack Yu
 */
-cv::Mat SimilarTransform(const cv::Mat& src, const cv::Mat& dst) {
+cv::Mat Aligner::Impl::SimilarTransform(const cv::Mat & src, const cv::Mat & dst) {
 	int num = src.rows;
 	int dim = src.cols;
 	cv::Mat src_mean = MeanAxis0(src);
@@ -127,26 +186,4 @@ cv::Mat SimilarTransform(const cv::Mat& src, const cv::Mat& dst) {
 	T.rowRange(0, dim).colRange(dim, dim + 1) = -(temp4 - dst_mean.t());
 	T.rowRange(0, dim).colRange(0, dim) *= scale;
 	return T;
-}
-
-cv::Mat Align(const cv::Mat& img_src, const std::vector<cv::Point2f>& keypoints) {
-	float points_src[5][2] = {
-		{keypoints[104].x, keypoints[104].y},
-		{keypoints[105].x, keypoints[105].y},
-		{keypoints[46].x,  keypoints[46].y },
-		{keypoints[84].x,  keypoints[84].y },
-		{keypoints[90].x, keypoints[90].y}
-	};
-
-	cv::Mat src_mat(5, 2, CV_32FC1, points_src);
-	cv::Mat dst_mat(5, 2, CV_32FC1, points_dst);
-
-	cv::Mat transform = SimilarTransform(src_mat, dst_mat);
-
-	cv::Mat face_aligned(112, 112, CV_32FC3);
-
-	cv::Mat transfer_mat = transform(cv::Rect(0, 0, 3, 2));
-	cv::warpAffine(img_src.clone(), face_aligned, transfer_mat, cv::Size(112, 112), 1, 0, 0);
-
-	return face_aligned;
 }
