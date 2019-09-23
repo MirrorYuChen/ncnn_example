@@ -79,6 +79,8 @@ time cost: 553.328ms
 # **7.refactor the project**
 ## **reduce the coupling of modules**
 
+# **8.add mtcnn**
+
 # **TODO:**
 ## (1). add face recognize database
 ## (2). add face track
