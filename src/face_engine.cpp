@@ -7,15 +7,22 @@
 #include "retinaface.h"
 #include "zq_landmarker.h"
 #include "mobilefacenet.h"
+#include "mtcnn.h"
 
 class FaceEngine::Impl {
 public:
-	Impl() : detector_(new RetinaFace()),
+	Impl() : detector_(new Mtcnn()),
 		landmarker_(new ZQLandmarker()),
 		recognizer_(new Mobilefacenet()),
-		aligner_(new Aligner()) {
+		aligner_(new Aligner()),
+		initialized_(false) {
+		// ncnn::create_gpu_instance();	
+		// fdnet_->opt.use_vulkan_compute = 1;
+		// flnet_->opt.use_vulkan_compute = 1;
+		// frnet_->opt.use_vulkan_compute = 1;
 	}
 	~Impl() {
+		// ncnn::destroy_gpu_instance();
 	}
 
 	Detector* detector_;
@@ -23,6 +30,7 @@ public:
 	Recognizer* recognizer_;
 	Aligner * aligner_;
 
+	bool initialized_;
 	int LoadModel(const char* root_path);
 
 };
@@ -39,7 +47,8 @@ int FaceEngine::Impl::LoadModel(const char * root_path) {
 	if (recognizer_->LoadModel(root_path) != 0) {
 		return 10000;
 	}
-	
+
+	initialized_ = true;
 	return 0;
 }
 

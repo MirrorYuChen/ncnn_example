@@ -1,0 +1,26 @@
+7767517
+24 25
+Input            data                             0 1 data
+Convolution      conv1                            1 1 data conv1 0=64 1=3 11=3 5=1 6=1728
+PReLU            prelu1                           1 1 conv1 prelu1 0=64
+Pooling          pool1                            1 1 prelu1 pool1 0=1 1=3 2=2 4=0 5=0
+ConvolutionDepthWise conv2_dw                         1 1 pool1 conv2_dw 0=64 1=3 11=3 5=1 6=576 7=64
+PReLU            prelu2_dw                        1 1 conv2_dw prelu2_dw 0=64
+Convolution      conv2_sep                        1 1 prelu2_dw conv2_sep 0=128 1=1 11=1 5=1 6=8192
+PReLU            prelu2_sep                       1 1 conv2_sep prelu2_sep 0=128
+Pooling          pool2                            1 1 prelu2_sep pool2 0=1 1=3 2=2 4=0 5=0
+ConvolutionDepthWise conv3_dw                         1 1 pool2 conv3_dw 0=128 1=3 11=3 5=1 6=1152 7=128
+PReLU            prelu3_dw                        1 1 conv3_dw prelu3_dw 0=128
+Convolution      conv3_sep                        1 1 prelu3_dw conv3_sep 0=256 1=1 11=1 5=1 6=32768
+PReLU            prelu3_sep                       1 1 conv3_sep prelu3_sep 0=256
+Pooling          pool3                            1 1 prelu3_sep pool3 0=1 1=2 2=2 4=0 5=0
+ConvolutionDepthWise conv4_dw                         1 1 pool3 conv4_dw 0=256 1=2 11=2 5=1 6=1024 7=256
+PReLU            prelu4_dw                        1 1 conv4_dw prelu4_dw 0=256
+Convolution      conv4_sep                        1 1 prelu4_dw conv4_sep 0=512 1=1 11=1 5=1 6=131072
+PReLU            prelu4_sep                       1 1 conv4_sep prelu4_sep 0=512
+ConvolutionDepthWise conv5_dw                         1 1 prelu4_sep conv5_dw 0=512 1=3 11=3 5=1 6=4608 7=512
+PReLU            prelu5_dw                        1 1 conv5_dw prelu5_dw 0=512
+Convolution      conv5_sep                        1 1 prelu5_dw conv5_sep 0=512 1=1 11=1 5=1 6=262144
+PReLU            prelu5_sep                       1 1 conv5_sep prelu5_sep 0=512
+InnerProduct     conv6_3                          1 1 prelu5_sep conv6_3 0=212 1=1 2=108544
+BatchNorm        bn6_3                            1 1 conv6_3 bn6_3 0=212

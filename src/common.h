@@ -2,6 +2,7 @@
 #define _COMMON_H_
 
 #include <vector>
+#include <string>
 #include "opencv2/core.hpp"
 
 #if defined(_OPENMP)
@@ -19,6 +20,7 @@ struct FaceInfo {
 	}
 	cv::Rect face_;
 	float score_;
+	float keypoints[10];
 };
 
 int RatioAnchors(const cv::Rect & anchor,
@@ -35,9 +37,11 @@ float InterRectArea(const cv::Rect & a,
 	const cv::Rect & b);
 
 int ComputeIOU(const cv::Rect & rect1,
-	const cv::Rect & rect2, float * iou);
+	const cv::Rect & rect2, float * iou,
+	const std::string& type);
 
-int NMS(const std::vector<FaceInfo>& faces, std::vector<FaceInfo> * result);
+int NMS(const std::vector<FaceInfo>& faces, std::vector<FaceInfo> * result,
+	const float& threshold, const std::string& type = "UNION");
 
 float CalculSimilarity(const std::vector<float>&feature1, const std::vector<float>& feature2);
 

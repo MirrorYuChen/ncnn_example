@@ -72,15 +72,24 @@ float InterRectArea(const cv::Rect & a, const cv::Rect & b) {
 }
 
 int ComputeIOU(const cv::Rect & rect1,
-	const cv::Rect & rect2, float * iou) {
+	const cv::Rect & rect2, float * iou,
+	const std::string& type) {
 
 	float inter_area = InterRectArea(rect1, rect2);
-	*iou = inter_area /(rect1.area() + rect2.area() - inter_area);
+	if (type == "UNION") {
+		*iou = inter_area / (rect1.area() + rect2.area() - inter_area);
+	}
+	else {
+		*iou = inter_area / MIN(rect1.area(), rect2.area());
+	}
 
 	return 0;
 }
 
-int NMS(const std::vector<FaceInfo>& faces, std::vector<FaceInfo>* result) {
+
+int NMS(const std::vector<FaceInfo>& faces,
+	std::vector<FaceInfo>* result, const float& threshold,
+	const std::string& type) {
 	result->clear();
 	if (faces.size() == 0)
 		return -1;
@@ -99,14 +108,13 @@ int NMS(const std::vector<FaceInfo>& faces, std::vector<FaceInfo>* result) {
 		for (unsigned i = 1; i < tmp.size(); i++) {
 			int tmp_i = tmp[i];
 			float iou = 0.0f;
-			ComputeIOU(faces[good_idx].face_, faces[tmp_i].face_, &iou);
-			if (iou <= 0.4)
+			ComputeIOU(faces[good_idx].face_, faces[tmp_i].face_, &iou, type);
+			if (iou <= threshold)
 				idx.push_back(tmp_i);
 		}
 	}
-
-	return 0;
 }
+
 
 float CalculSimilarity(const std::vector<float>&feature1, const std::vector<float>& feature2) {
 	if (feature1.size() != feature2.size()) {

@@ -2,10 +2,9 @@
 #include <iostream>
 #include "common.h"
 
-RetinaFace::RetinaFace() {
-	retina_net_ = new ncnn::Net();
-	initialized = false;
-}
+RetinaFace::RetinaFace() :
+	retina_net_(new ncnn::Net()),
+	initialized_(false) {}
 
 RetinaFace::~RetinaFace() {
 	retina_net_->clear();
@@ -34,7 +33,7 @@ int RetinaFace::LoadModel(const char * root_path) {
 		}
 		anchors_generated_.push_back(anchors);
 	}
-	initialized = true;
+	initialized_ = true;
 
 	return 0;
 }
@@ -43,7 +42,7 @@ int RetinaFace::Detect(const cv::Mat & img_src,
 	std::vector<FaceInfo>* faces) {
 	std::cout << "start face detect." << std::endl;
 	faces->clear();
-	if (!initialized) {
+	if (!initialized_) {
 		std::cout << "retinaface detector model uninitialized." << std::endl;
 		return 10000;
 	}
@@ -119,7 +118,7 @@ int RetinaFace::Detect(const cv::Mat & img_src,
 	}
 
 	std::sort(faces_tmp.begin(), faces_tmp.end(), [](FaceInfo face1, FaceInfo face2) { return face1.score_ < face2.score_; });
-	NMS(faces_tmp, faces);
+	NMS(faces_tmp, faces, iouThreshold_);
 	std::cout << faces->size() << " faces detected." << std::endl;
 
 	std::cout << "end face detect." << std::endl;
