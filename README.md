@@ -1,4 +1,4 @@
-# **ncnn_106landmarks**
+# **ncnn_106landmarks: I promise i'll update this project forever!**
 # **1. add landmark**
 ## **(1). the original model comes from repositories:**
 ### https://github.com/zuoqing1988/ZQCNN  by zuoqing
