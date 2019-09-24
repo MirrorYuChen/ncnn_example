@@ -84,6 +84,8 @@ time cost: 553.328ms
 ## **For Example:**
 ## **detector_(new Mtcnn()) To detector_(new RetinaFace())**
 
+# **9.optimize the structure of the project**
+
 # **TODO:**
 ## (1). add face recognize database
 ## (2). add face track
