@@ -1,7 +1,7 @@
 #ifndef _FACE_ZQ_LANDMARKER_H_
 #define _FACE_ZQ_LANDMARKER_H_
 
-#include "landmarker.h"
+#include "../landmarker.h"
 #include "ncnn/net.h"
 
 class ZQLandmarker : public Landmarker {

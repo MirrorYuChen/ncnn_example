@@ -490,7 +490,7 @@ inline Mat& Mat::operator=(const Mat& m)
 
 inline void Mat::fill(float _v)
 {
-    int size = (int)total();
+    int size = total();
     float* ptr = (float*)data;
 
 #if __ARM_NEON
@@ -544,7 +544,7 @@ inline void Mat::fill(float _v)
 
 inline void Mat::fill(int _v)
 {
-    int size = (int)total();
+    int size = total();
     int* ptr = (int*)data;
 
 #if __ARM_NEON
@@ -991,24 +991,24 @@ inline const Mat Mat::channel(int _c) const
 
 inline float* Mat::row(int y)
 {
-    return (float*)((unsigned char*)data + w * y * elemsize);
+    return (float*)data + w * y;
 }
 
 inline const float* Mat::row(int y) const
 {
-    return (const float*)((unsigned char*)data + w * y * elemsize);
+    return (const float*)data + w * y;
 }
 
 template <typename T>
 inline T* Mat::row(int y)
 {
-    return (T*)((unsigned char*)data + w * y * elemsize);
+    return (T*)data + w * y;
 }
 
 template <typename T>
 inline const T* Mat::row(int y) const
 {
-    return (const T*)((unsigned char*)data + w * y * elemsize);
+    return (const T*)data + w * y;
 }
 
 inline Mat Mat::channel_range(int _c, int channels)

@@ -58,13 +58,13 @@ static inline void* fastMalloc(size_t size)
 {
 #if _MSC_VER
     return _aligned_malloc(size, MALLOC_ALIGN);
-#elif _POSIX_C_SOURCE >= 200112L || (__ANDROID__ && __ANDROID_API__ >= 17)
+#elif __ANDROID__
+    return memalign(MALLOC_ALIGN, size);
+#elif _POSIX_C_SOURCE >= 200112L
     void* ptr = 0;
     if (posix_memalign(&ptr, MALLOC_ALIGN, size))
         ptr = 0;
     return ptr;
-#elif __ANDROID__ && __ANDROID_API__ < 17
-    return memalign(MALLOC_ALIGN, size);
 #else
     unsigned char* udata = (unsigned char*)malloc(size + sizeof(void*) + MALLOC_ALIGN);
     if (!udata)
@@ -81,9 +81,9 @@ static inline void fastFree(void* ptr)
     {
 #if _MSC_VER
         _aligned_free(ptr);
-#elif _POSIX_C_SOURCE >= 200112L || (__ANDROID__ && __ANDROID_API__ >= 17)
+#elif __ANDROID__
         free(ptr);
-#elif __ANDROID__ && __ANDROID_API__ < 17
+#elif _POSIX_C_SOURCE >= 200112L
         free(ptr);
 #else
         unsigned char* udata = ((unsigned char**)ptr)[-1];
@@ -118,6 +118,40 @@ static inline void fastFree(void* ptr)
 // thread-unsafe branch
 static inline int NCNN_XADD(int* addr, int delta) { int tmp = *addr; *addr += delta; return tmp; }
 #endif
+
+#ifdef _WIN32
+class Mutex
+{
+public:
+    Mutex() { InitializeSRWLock(&srwlock); }
+    ~Mutex() {}
+    void lock() { AcquireSRWLockExclusive(&srwlock); }
+    void unlock() { ReleaseSRWLockExclusive(&srwlock); }
+private:
+    // NOTE SRWLock is available from windows vista
+    SRWLOCK srwlock;
+};
+#else // _WIN32
+class Mutex
+{
+public:
+    Mutex() { pthread_mutex_init(&mutex, 0); }
+    ~Mutex() { pthread_mutex_destroy(&mutex); }
+    void lock() { pthread_mutex_lock(&mutex); }
+    void unlock() { pthread_mutex_unlock(&mutex); }
+private:
+    pthread_mutex_t mutex;
+};
+#endif // _WIN32
+
+class MutexLockGuard
+{
+public:
+    MutexLockGuard(Mutex& _mutex) : mutex(_mutex) { mutex.lock(); }
+    ~MutexLockGuard() { mutex.unlock(); }
+private:
+    Mutex& mutex;
+};
 
 class Allocator
 {
@@ -218,11 +252,11 @@ protected:
     VkDeviceMemory allocate_dedicated_memory(size_t size, uint32_t memory_type_index, VkBuffer buffer);
 };
 
-class VkBlobBufferAllocator : public VkAllocator
+class VkUnlockedBlobBufferAllocator : public VkAllocator
 {
 public:
-    VkBlobBufferAllocator(const VulkanDevice* vkdev);
-    virtual ~VkBlobBufferAllocator();
+    VkUnlockedBlobBufferAllocator(const VulkanDevice* vkdev);
+    virtual ~VkUnlockedBlobBufferAllocator();
 
 public:
     // buffer block size, default=16M
@@ -239,6 +273,21 @@ private:
     size_t buffer_offset_alignment;
     std::vector< std::list< std::pair<size_t, size_t> > > budgets;
     std::vector<VkBufferMemory*> buffer_blocks;
+};
+
+class VkBlobBufferAllocator : public VkUnlockedBlobBufferAllocator
+{
+public:
+    VkBlobBufferAllocator(const VulkanDevice* vkdev);
+    virtual ~VkBlobBufferAllocator();
+
+public:
+    virtual void clear();
+    virtual VkBufferMemory* fastMalloc(size_t size);
+    virtual void fastFree(VkBufferMemory* ptr);
+
+private:
+    Mutex budgets_lock;
 };
 
 class VkWeightBufferAllocator : public VkAllocator
@@ -266,11 +315,11 @@ private:
     std::vector<VkBufferMemory*> dedicated_buffer_blocks;
 };
 
-class VkStagingBufferAllocator : public VkAllocator
+class VkUnlockedStagingBufferAllocator : public VkAllocator
 {
 public:
-    VkStagingBufferAllocator(const VulkanDevice* vkdev);
-    virtual ~VkStagingBufferAllocator();
+    VkUnlockedStagingBufferAllocator(const VulkanDevice* vkdev);
+    virtual ~VkUnlockedStagingBufferAllocator();
 
 public:
     // ratio range 0 ~ 1
@@ -287,6 +336,21 @@ private:
     uint32_t memory_type_index;
     unsigned int size_compare_ratio;// 0~256
     std::list<VkBufferMemory*> budgets;
+};
+
+class VkStagingBufferAllocator : public VkUnlockedStagingBufferAllocator
+{
+public:
+    VkStagingBufferAllocator(const VulkanDevice* vkdev);
+    virtual ~VkStagingBufferAllocator();
+
+public:
+    virtual void clear();
+    virtual VkBufferMemory* fastMalloc(size_t size);
+    virtual void fastFree(VkBufferMemory* ptr);
+
+private:
+    Mutex budgets_lock;
 };
 
 class VkWeightStagingBufferAllocator : public VkAllocator

@@ -2,7 +2,7 @@
 #define _FACE_DETECTOR_H_
 
 #include "opencv2/core.hpp"
-#include "common.h"
+#include "../common/common.h"
 
 class Detector {
 public:
