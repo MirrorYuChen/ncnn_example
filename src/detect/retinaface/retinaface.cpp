@@ -1,6 +1,5 @@
 #include "retinaface.h"
 #include <iostream>
-#include "common.h"
 
 RetinaFace::RetinaFace() :
 	retina_net_(new ncnn::Net()),

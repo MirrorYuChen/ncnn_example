@@ -1,7 +1,7 @@
 #ifndef _RETINAFACE_H_
 #define _RETINAFACE_H_
 
-#include "detector.h"
+#include "../detector.h"
 #include "ncnn/net.h"
 
 using ANCHORS = std::vector<cv::Rect>;

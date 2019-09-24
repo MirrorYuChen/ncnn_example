@@ -1,7 +1,6 @@
 #include "mobilefacenet.h"
 #include <iostream>
 #include <string>
-#include "common.h"
 
 Mobilefacenet::Mobilefacenet() {
 	mobileface_net_ = new ncnn::Net();

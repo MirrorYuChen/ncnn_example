@@ -1,13 +1,11 @@
 #include "face_engine.h"
 #include <iostream>
 #include <string>
-#include "ncnn/net.h"
-#include "common.h"
-#include "aligner.h"
-#include "retinaface.h"
-#include "zq_landmarker.h"
-#include "mobilefacenet.h"
-#include "mtcnn.h"
+#include "align/aligner.h"
+#include "detect/mtcnn/mtcnn.h"
+#include "detect/retinaface/retinaface.h"
+#include "landmark/zqlandmark/zq_landmarker.h"
+#include "recognize/mobilefacenet/mobilefacenet.h"
 
 class FaceEngine::Impl {
 public:

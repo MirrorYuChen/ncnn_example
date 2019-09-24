@@ -1,6 +1,5 @@
 #include "mtcnn.h"
 #include <iostream>
-#include "common.h"
 #include "opencv2/imgproc.hpp"
 
 Mtcnn::Mtcnn() :

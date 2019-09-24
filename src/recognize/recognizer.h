@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "opencv2/core.hpp"
+#include "../common/common.h"
 
 class Recognizer {
 public:

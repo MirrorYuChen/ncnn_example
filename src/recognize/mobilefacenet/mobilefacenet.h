@@ -1,7 +1,7 @@
 #ifndef _FACE_MOBILEFACENET_H_
 #define _FACE_MOBILEFACENET_H_
 
-#include "recognizer.h"
+#include "../recognizer.h"
 #include <vector>
 #include "ncnn/net.h"
 
