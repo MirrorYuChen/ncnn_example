@@ -88,6 +88,6 @@ time cost: 553.328ms
 # **9.optimize the structure of the project**
 
 # **TODO:**
-## (1). add face recognize database
-## (2). add face track
+## -[x]. add face recognize database
+## -[x]. add face track
 
