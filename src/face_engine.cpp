@@ -4,12 +4,13 @@
 #include "align/aligner.h"
 #include "detect/mtcnn/mtcnn.h"
 #include "detect/retinaface/retinaface.h"
+#include "detect/centerface/centerface.h"
 #include "landmark/zqlandmark/zq_landmarker.h"
 #include "recognize/mobilefacenet/mobilefacenet.h"
 
 class FaceEngine::Impl {
 public:
-	Impl() : detector_(new Mtcnn()),
+	Impl() : detector_(new CenterFace()),
 		landmarker_(new ZQLandmarker()),
 		recognizer_(new Mobilefacenet()),
 		aligner_(new Aligner()),

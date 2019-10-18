@@ -12,6 +12,7 @@ file(GLOB SRC_FILES
     src/detect/*.cpp
     src/detect/retinaface/*.cpp
     src/detect/mtcnn/*.cpp
+    src/detect/centerface/*.cpp
     src/landmark/*.cpp
     src/landmark/zqlandmark/*.cpp
     src/recognize/*.cpp
@@ -27,6 +28,7 @@ set(INC_DIRS
     ${PROJECT_SOURCE_DIR}/src/detect
     ${PROJECT_SOURCE_DIR}/src/detect/retinaface
     ${PROJECT_SOURCE_DIR}/src/detect/mtcnn
+    ${PROJECT_SOURCE_DIR}/src/detect/centerface
     ${PROJECT_SOURCE_DIR}/src/landmark
     ${PROJECT_SOURCE_DIR}/src/landmark/zqlandmark
     ${PROJECT_SOURCE_DIR}/src/recognize

@@ -229,8 +229,8 @@ int Mtcnn::ODetect(const cv::Mat & img_src,
 			h_reg * face.height - face_info.face_.y;
 
 		for (int num = 0; num < 5; num++) {
-			face_info.keypoints[num] = face.x + face.width * keypoints_mat[num];
-			face_info.keypoints[num + 5] = face.y + face.height * keypoints_mat[num + 5];
+			face_info.keypoints_[num] = face.x + face.width * keypoints_mat[num];
+			face_info.keypoints_[num + 5] = face.y + face.height * keypoints_mat[num + 5];
 		}
 
 		third_bboxes->push_back(face_info);

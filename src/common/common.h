@@ -20,7 +20,7 @@ struct FaceInfo {
 	}
 	cv::Rect face_;
 	float score_;
-	float keypoints[10];
+	float keypoints_[10];
 };
 
 int RatioAnchors(const cv::Rect & anchor,
