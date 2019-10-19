@@ -84,8 +84,8 @@ int CenterFace::Detect(const cv::Mat& img_src,
             face_info.face_.height = scale_y * (ymax - ymin);
 
             for (int num = 0; num < 5; ++num) {
-                face_info.keypoints_[num    ] = s1 * mat_landmark.channel(2 * num + 1)[index] + xmin;
-                face_info.keypoints_[num + 5] = s0 * mat_landmark.channel(2 * num + 0)[index] + ymin;
+                face_info.keypoints_[num    ] = scale_x * (s1 * mat_landmark.channel(2 * num + 1)[index] + xmin);
+                face_info.keypoints_[num + 5] = scale_y * (s0 * mat_landmark.channel(2 * num + 0)[index] + ymin);
             }
             faces_tmp.push_back(face_info);
 		}
