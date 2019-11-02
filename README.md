@@ -90,10 +90,10 @@ time cost: 553.328ms
 ## https://github.com/Star-Clouds/centerface
 ## **please update ncnn to newest version, speed will impove a lot.**
 
-#**10.add mobilefacenet-gnap model**
+# **11.add mobilefacenet-gnap model**
 ## you need enable Tile layer, when compile ncnn library
 
 # **TODO:**
- -[x]. add face recognize database
- -[x]. add face track
+ - [x]. add face recognize database
+ - [x]. add face track
 
