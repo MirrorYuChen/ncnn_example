@@ -162,10 +162,53 @@ int TestTrack(int argc, char* argv[]) {
 	return 0;
 }
 
+int test_database(int argc, char* argv[]) {
+    const char* img_path = "../images/4.jpg";
+    cv::Mat img_src = cv::imread(img_path);
+    if (img_src.empty()) {
+        std::cout << "load image failed." << std::endl;
+        return 10001;
+    }
+
+    const char* root_path = "../models";
+    FaceEngine* face_engine = new FaceEngine();
+    face_engine->LoadModel(root_path);
+    face_engine->Load();
+    std::vector<FaceInfo> faces;
+    face_engine->Detect(img_src, &faces);
+
+    int faces_num = static_cast<int>(faces.size());
+    std::cout << "faces number: " << faces_num << std::endl;
+    for (int i = 0; i < faces_num; ++i) {
+        cv::Rect face = faces.at(i).face_;
+		cv::rectangle(img_src, face, cv::Scalar(0, 255, 0), 2);
+        std::vector<float> feat;
+        face_engine->ExtractFeature(img_src(face).clone(), &feat);
+
+#if 0
+        face_engine->Insert(feat, "face" + std::to_string(i));
+#endif
+
+#if 1
+        QueryResult query_result;
+        face_engine->QueryTop(feat, &query_result);
+        std::cout << i << "-th face is: " << query_result.name_ <<
+            " similarity is: " << query_result.sim_ << std::endl;   
+#endif
+
+    }
+    face_engine->Save();
+    cv::imwrite("../images/result.jpg", img_src);
+
+    return 0;
+}
+
+
 int main(int argc, char* argv[]) {
 	// return TestLandmark(argc, argv);
 	// return TestRecognize(argc, argv);
 	// return TestAlignFace(argc, argv);
 	// return TestCenterface(argc, argv);
-	return TestTrack(argc, argv);
+	// return TestTrack(argc, argv);
+	return test_database(argc, argv);
 }

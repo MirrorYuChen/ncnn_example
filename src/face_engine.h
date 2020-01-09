@@ -15,6 +15,14 @@ public:
 	int ExtractFeature(const cv::Mat& img_face, std::vector<float>* feature);
 	int AlignFace(const cv::Mat& img_src, const std::vector<cv::Point2f>& keypoints, cv::Mat* face_aligned);
 
+	// database operation
+    int Insert(const std::vector<float>& feat, const std::string& name);
+	int Delete(int64_t index);
+	int64_t QueryTop(const std::vector<float>& feat, QueryResult *query_result = nullptr);
+    int Save();
+    int Load();
+
+
 private:
 	class Impl;
 	Impl* impl_;

@@ -11,6 +11,7 @@ file(GLOB SRC_FILES
     src/common/*.cpp
     src/detect/*.cpp
     src/track/*.cpp
+    src/database/*.cpp
     src/detect/retinaface/*.cpp
     src/detect/mtcnn/*.cpp
     src/detect/centerface/*.cpp
@@ -26,6 +27,7 @@ set(INC_DIRS
     ${PROJECT_SOURCE_DIR}/src
     ${PROJECT_SOURCE_DIR}/src/align
     ${PROJECT_SOURCE_DIR}/src/common
+    ${PROJECT_SOURCE_DIR}/src/database
     ${PROJECT_SOURCE_DIR}/src/detect
     ${PROJECT_SOURCE_DIR}/src/detect/retinaface
     ${PROJECT_SOURCE_DIR}/src/detect/mtcnn

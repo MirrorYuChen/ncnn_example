@@ -28,6 +28,11 @@ struct TrackedFaceInfo {
 	float iou_score_;
 };
 
+struct QueryResult {
+    std::string name_;
+    float sim_;
+};
+
 int RatioAnchors(const cv::Rect & anchor,
 	const std::vector<float>& ratios, std::vector<cv::Rect>* anchors);
 
