@@ -40,7 +40,7 @@
 # **5.use openmp to optimize for loops**
 ## **test result:**
 ## **do not use vulkan:**
-'
+'''
 start face detect.
 4 faces detected.
 start keypoints extract.
@@ -52,9 +52,9 @@ keypoints extract end.
 start keypoints extract.
 keypoints extract end.
 time cost: 137.495ms
-'
+'''
 ## **use vulkan:**
-'
+'''
 [0 NVIDIA Tegra X1 (nvgpu)]  queueC=0[16]  queueT=0[16]  memU=2  memDL=2  memHV=2
 [0 NVIDIA Tegra X1 (nvgpu)]  fp16p=1  fp16s=1  fp16a=0  int8s=1  int8a=0
 start face detect.
@@ -68,7 +68,7 @@ keypoints extract end.
 start keypoints extract.
 keypoints extract end.
 time cost: 553.328ms
-'
+'''
 ## **why so strange?**
 
 # **6.add face alignment interface**
@@ -92,7 +92,10 @@ time cost: 553.328ms
 
 # **10.add centerface detection**
 
-# **TODO:**
- - [x]. add face recognize database
- - [x]. add face track
+# **11.add facedatabase and face tracking:**
+## **refer to the project seetaface2:**
+## https://github.com/seetafaceengine/SeetaFace2
 
+# **TODO:**
+- [x] refactor the project
+- [x] optimize the speed
