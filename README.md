@@ -86,10 +86,13 @@ time cost: 553.328ms
 ## **detector_(new Mtcnn()) To detector_(new RetinaFace())**
 
 # **9.optimize the structure of the project**
+# **10.add centerface:**
+## https://github.com/Star-Clouds/centerface
+## **please update ncnn to newest version, speed will impove a lot.**
 
 # **10.add centerface detection**
 
 # **TODO:**
-## -[x]. add face recognize database
-## -[x]. add face track
+ - [x]. add face recognize database
+ - [x]. add face track
 
