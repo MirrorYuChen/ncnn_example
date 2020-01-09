@@ -23,6 +23,11 @@ struct FaceInfo {
 	float keypoints_[10];
 };
 
+struct TrackedFaceInfo {
+	FaceInfo face_info_;
+	float iou_score_;
+};
+
 int RatioAnchors(const cv::Rect & anchor,
 	const std::vector<float>& ratios, std::vector<cv::Rect>* anchors);
 
@@ -38,7 +43,7 @@ float InterRectArea(const cv::Rect & a,
 
 int ComputeIOU(const cv::Rect & rect1,
 	const cv::Rect & rect2, float * iou,
-	const std::string& type);
+	const std::string& type = "UNION");
 
 int NMS(const std::vector<FaceInfo>& faces, std::vector<FaceInfo> * result,
 	const float& threshold, const std::string& type = "UNION");

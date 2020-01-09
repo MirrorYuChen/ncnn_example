@@ -159,7 +159,7 @@ int Mtcnn::RDetect(const cv::Mat & img_src,
 	std::vector<FaceInfo>* second_bboxes) {
 	second_bboxes->clear();
 	for (int i = 0; i < static_cast<int>(first_bboxes.size()); ++i) {
-		cv::Rect face = first_bboxes.at(i).face_;
+		cv::Rect face = first_bboxes.at(i).face_ & cv::Rect(0,0, img_src.cols, img_src.rows);
 		std::cout << "rnet input: " << face << std::endl;
 		cv::Mat img_face = img_src(face).clone();
 		ncnn::Mat in = ncnn::Mat::from_pixels_resize(img_face.data,
@@ -197,7 +197,7 @@ int Mtcnn::ODetect(const cv::Mat & img_src,
 	std::vector<FaceInfo>* third_bboxes) {
 	third_bboxes->clear();
 	for (int i = 0; i < static_cast<int>(second_bboxes.size()); ++i) {
-		cv::Rect face = second_bboxes.at(i).face_;
+		cv::Rect face = second_bboxes.at(i).face_ & cv::Rect(0,0, img_src.cols, img_src.rows);
 		cv::Mat img_face = img_src(face).clone();
 		cv::Mat img_resized;
 		cv::resize(img_face, img_resized, cv::Size(48, 48));

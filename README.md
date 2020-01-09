@@ -87,6 +87,8 @@ time cost: 553.328ms
 
 # **9.optimize the structure of the project**
 
+# **10.add centerface detection**
+
 # **TODO:**
 ## -[x]. add face recognize database
 ## -[x]. add face track

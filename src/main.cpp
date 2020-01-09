@@ -122,9 +122,50 @@ int TestCenterface(int argc, char* argv[]) {
 	return 0;
 }
 
+int TestTrack(int argc, char* argv[]) {
+	cv::Mat img_src = cv::imread("../images/4.jpg");
+	cv::VideoCapture cam(0);
+	if (!cam.isOpened()) {
+		std::cout << "open camera failed." << std::endl;
+		return -1;
+	}
+
+
+	const char* root_path = "../models";
+
+	FaceEngine face_engine;
+	face_engine.LoadModel(root_path);
+
+	cv::Mat frame;
+	while (true) {
+		cam >> frame;
+		if (frame.empty()) {
+			continue;
+		}
+		std::vector<FaceInfo> curr_faces;
+		face_engine.Detect(frame, &curr_faces);
+		std::vector<TrackedFaceInfo> faces;
+		face_engine.Track(curr_faces, &faces);
+
+		for (int i = 0; i < static_cast<int>(faces.size()); ++i) {
+			TrackedFaceInfo tracked_face_info = faces.at(i);
+			cv::rectangle(frame, tracked_face_info.face_info_.face_, cv::Scalar(0, 255, 0), 2);
+		}
+
+		cv::imshow("result", frame);
+		if (cv::waitKey(60) == 'q') {
+			break;
+		}
+	}
+
+
+	return 0;
+}
+
 int main(int argc, char* argv[]) {
 	// return TestLandmark(argc, argv);
 	// return TestRecognize(argc, argv);
 	// return TestAlignFace(argc, argv);
-	return TestCenterface(argc, argv);
+	// return TestCenterface(argc, argv);
+	return TestTrack(argc, argv);
 }

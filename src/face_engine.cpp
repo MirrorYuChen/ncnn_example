@@ -5,12 +5,14 @@
 #include "detect/mtcnn/mtcnn.h"
 #include "detect/retinaface/retinaface.h"
 #include "detect/centerface/centerface.h"
+#include "track/tracker.h"
 #include "landmark/zqlandmark/zq_landmarker.h"
 #include "recognize/mobilefacenet/mobilefacenet.h"
 
 class FaceEngine::Impl {
 public:
 	Impl() : detector_(new CenterFace()),
+		tracker_(new Tracker()),
 		landmarker_(new ZQLandmarker()),
 		recognizer_(new Mobilefacenet()),
 		aligner_(new Aligner()),
@@ -25,6 +27,7 @@ public:
 	}
 
 	Detector* detector_;
+	Tracker* tracker_;
 	Landmarker* landmarker_;
 	Recognizer* recognizer_;
 	Aligner * aligner_;
@@ -68,6 +71,10 @@ int FaceEngine::LoadModel(const char * root_path) {
 
 int FaceEngine::Detect(const cv::Mat & img_src, std::vector<FaceInfo>* faces) {
 	return impl_->detector_->Detect(img_src, faces);
+}
+
+int FaceEngine::Track(const std::vector<FaceInfo>& curr_faces, std::vector<TrackedFaceInfo>* faces) {
+	return impl_->tracker_->Track(curr_faces, faces);
 }
 
 int FaceEngine::ExtractKeypoints(const cv::Mat & img_src,
