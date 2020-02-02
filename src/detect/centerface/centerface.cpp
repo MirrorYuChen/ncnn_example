@@ -2,6 +2,7 @@
 #include <iostream>
 #include "opencv2/imgproc.hpp"
 
+namespace mirror {
 CenterFace::CenterFace() {
     centernet_ = new ncnn::Net();
     initialized_ = false;
@@ -93,4 +94,6 @@ int CenterFace::Detect(const cv::Mat& img_src,
     NMS(faces_tmp, faces, nmsThreshold_);
     std::cout << "end detect." << std::endl;
     return 0;
+}
+
 }
