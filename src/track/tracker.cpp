@@ -2,6 +2,7 @@
 #include <iostream>
 #include <queue>
 
+namespace mirror {
 Tracker::Tracker() {
 
 }
@@ -54,4 +55,6 @@ int Tracker::Track(const std::vector<FaceInfo>& curr_faces, std::vector<TrackedF
     pre_tracked_faces_ = curr_tracked_faces;
     *faces = curr_tracked_faces;
     std::cout << "end track face." << std::endl;
+}
+
 }
