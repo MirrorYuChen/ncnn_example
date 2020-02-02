@@ -1,5 +1,6 @@
 #include "file_stream.h"
 
+namespace mirror {
 bool FileStream::open(const std::string & path, int mode) {
 	close();
 	std::string mode_str;
@@ -41,3 +42,4 @@ size_t FileStream::read(char* data, size_t length) {
 	return size_t(result);
 }
 
+}
