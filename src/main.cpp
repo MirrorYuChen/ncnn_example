@@ -1,6 +1,8 @@
 #include "opencv2/opencv.hpp"
 #include "face_engine.h"
 
+using namespace mirror;
+
 int TestLandmark(int argc, char* argv[]) {
 	cv::Mat img_src = cv::imread("../images/4.jpg");
 	const char* root_path = "../models";
@@ -205,10 +207,10 @@ int test_database(int argc, char* argv[]) {
 
 
 int main(int argc, char* argv[]) {
-	// return TestLandmark(argc, argv);
+	return TestLandmark(argc, argv);
 	// return TestRecognize(argc, argv);
 	// return TestAlignFace(argc, argv);
 	// return TestCenterface(argc, argv);
 	// return TestTrack(argc, argv);
-	return test_database(argc, argv);
+	// return test_database(argc, argv);
 }
