@@ -1,6 +1,7 @@
 #include "face_database.h"
 #include <iostream>
 
+namespace mirror {
 class FaceDatabase::Impl {
 public:
 	Impl() {
@@ -215,3 +216,4 @@ size_t FaceDatabase::Count() const {
 	return impl_->Count();
 }
 
+}
