@@ -6,6 +6,7 @@
 #include "opencv2/core.hpp"
 #include "ncnn/net.h"
 
+namespace mirror {
 class Mtcnn : public Detector {
 public:
 	Mtcnn();
@@ -37,6 +38,7 @@ private:
 	int Refine(std::vector<FaceInfo>* bboxes, const cv::Size max_size);
 };
 
+}
 
 
 #endif // !_FACE_MTCNN_H_
