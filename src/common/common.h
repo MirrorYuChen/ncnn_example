@@ -9,6 +9,7 @@
 #include <omp.h>
 #endif
 
+namespace mirror {
 #define kFaceFeatureDim 128
 const int threads_num = 2;
 
@@ -54,6 +55,8 @@ int NMS(const std::vector<FaceInfo>& faces, std::vector<FaceInfo> * result,
 	const float& threshold, const std::string& type = "UNION");
 
 float CalculSimilarity(const std::vector<float>&feature1, const std::vector<float>& feature2);
+
+}
 
 #endif // !_COMMON_H_
 
