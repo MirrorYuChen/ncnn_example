@@ -1,6 +1,7 @@
 #include "retinaface.h"
 #include <iostream>
 
+namespace mirror {
 RetinaFace::RetinaFace() :
 	retina_net_(new ncnn::Net()),
 	initialized_(false) {}
@@ -122,4 +123,6 @@ int RetinaFace::Detect(const cv::Mat & img_src,
 
 	std::cout << "end face detect." << std::endl;
 	return 0;
+}
+
 }
