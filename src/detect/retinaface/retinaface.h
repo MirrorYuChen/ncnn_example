@@ -4,6 +4,7 @@
 #include "../detector.h"
 #include "ncnn/net.h"
 
+namespace mirror {
 using ANCHORS = std::vector<cv::Rect>;
 class RetinaFace : public Detector {
 public:
@@ -21,7 +22,7 @@ private:
 
 };
 
-
+}
 
 #endif // !_RETINAFACE_H_
 
