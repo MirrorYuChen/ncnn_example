@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 
+namespace mirror {
 Mobilefacenet::Mobilefacenet() {
 	mobileface_net_ = new ncnn::Net();
 	initialized_ = false;
@@ -54,5 +55,6 @@ int Mobilefacenet::ExtractFeature(const cv::Mat & img_face,
 	return 0;
 }
 
+}
 
 
