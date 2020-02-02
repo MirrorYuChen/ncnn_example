@@ -2,6 +2,7 @@
 #include <iostream>
 #include "opencv2/imgproc.hpp"
 
+namespace mirror {
 Mtcnn::Mtcnn() :
 	pnet_(new ncnn::Net()),
 	rnet_(new ncnn::Net()),
@@ -263,4 +264,6 @@ int Mtcnn::Refine(std::vector<FaceInfo>* bboxes, const cv::Size max_size) {
 	}
 	
 	return 0;
+}
+
 }
