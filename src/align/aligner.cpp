@@ -3,7 +3,7 @@
 #include "opencv2/core.hpp"
 #include "opencv2/imgproc.hpp"
 
-
+namespace mirror {
 class Aligner::Impl {
 public:
 	int Align(const cv::Mat& img_src, const std::vector<cv::Point2f>& keypoints, cv::Mat* face_aligned);
@@ -186,4 +186,6 @@ cv::Mat Aligner::Impl::SimilarTransform(const cv::Mat & src, const cv::Mat & dst
 	T.rowRange(0, dim).colRange(dim, dim + 1) = -(temp4 - dst_mean.t());
 	T.rowRange(0, dim).colRange(0, dim) *= scale;
 	return T;
+}
+
 }
