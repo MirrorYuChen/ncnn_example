@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 
+namespace mirror {
 ZQLandmarker::ZQLandmarker() {
 	zq_landmarker_net_ = new ncnn::Net();
 	initialized = false;
@@ -55,4 +56,6 @@ int ZQLandmarker::ExtractKeypoints(const cv::Mat & img_src,
 
 	std::cout << "end extract keypoints." << std::endl;
 	return 0;
+}
+
 }
