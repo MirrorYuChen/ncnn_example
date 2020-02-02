@@ -3,6 +3,7 @@
 
 #include "opencv2/core.hpp"
 
+namespace mirror {
 class Aligner {
 public:
 	Aligner();
@@ -16,7 +17,7 @@ private:
 	Impl* impl_;
 };
 
-
+}
 
 #endif // !_FACE_ALIGNER_H_
 
