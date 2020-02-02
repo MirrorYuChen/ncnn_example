@@ -5,6 +5,7 @@
 #include "opencv2/core.hpp"
 #include "../common/common.h"
 
+namespace mirror {
 class Recognizer {
 public:
 	Recognizer();
@@ -14,6 +15,22 @@ public:
 
 };
 
+class RecognizerFactory {
+public:
+	RecognizerFactory() {};
+	virtual Recognizer* CreateRecognizer() {};
+	virtual ~RecognizerFactory() {}
+
+};
+
+class MobilefacenetRecognizerFactory : public RecognizerFactory {
+public:
+	MobilefacenetRecognizerFactory() {};
+	Recognizer* CreateRecognizer();
+	~MobilefacenetRecognizerFactory() {}
+};	
+
+}
 
 #endif // !_FACE_RECOGNIZER_H_
 
