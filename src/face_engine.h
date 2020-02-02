@@ -2,6 +2,7 @@
 #include "common/common.h"
 #include "opencv2/core.hpp"
 
+namespace mirror {
 class FaceEngine {
 public:
 	FaceEngine();
@@ -28,3 +29,5 @@ private:
 	Impl* impl_;
 
 };
+
+}
