@@ -6,6 +6,7 @@
 #include "opencv2/core.hpp"
 #include "ncnn/net.h"
 
+namespace mirror {
 class CenterFace : public Detector {
 public:
     CenterFace();
@@ -20,5 +21,6 @@ private:
     bool initialized_;
 };
 
+}
 
 #endif // !_FACE_CENTERFACE_H_
