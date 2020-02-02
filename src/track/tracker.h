@@ -5,6 +5,7 @@
 #include "../common/common.h"
 #include "opencv2/core.hpp"
 
+namespace mirror {
 class Tracker {
 public:
     Tracker();
@@ -18,5 +19,6 @@ private:
     const float maxScore_ = 0.5f;
 };
 
+}
 
 #endif // !_FACE_TRACKER_H_
