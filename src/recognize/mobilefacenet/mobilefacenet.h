@@ -5,6 +5,7 @@
 #include <vector>
 #include "ncnn/net.h"
 
+namespace mirror {
 
 class Mobilefacenet : public Recognizer {
 public:
@@ -19,7 +20,7 @@ private:
 	bool initialized_;
 };
 
-
+}
 
 #endif // !_FACE_MOBILEFACENET_H_
 
