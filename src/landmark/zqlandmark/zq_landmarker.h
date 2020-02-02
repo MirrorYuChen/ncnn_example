@@ -4,6 +4,7 @@
 #include "../landmarker.h"
 #include "ncnn/net.h"
 
+namespace mirror {
 class ZQLandmarker : public Landmarker {
 public:
 	ZQLandmarker();
@@ -20,7 +21,7 @@ private:
 	bool initialized;
 };
 
-
+}
 
 #endif // !_FACE_ZQ_LANDMARKER_H_
 
