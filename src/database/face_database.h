@@ -12,6 +12,7 @@
 #define kFaceFeatureDim 128
 #define kFaceNameDim 128
 
+namespace mirror {
 class FaceDatabase {
 public:
 	FaceDatabase();
@@ -37,6 +38,7 @@ private:
 
 };
 
+}
 
 #endif // !_FACE_DATABASE_H_
 
