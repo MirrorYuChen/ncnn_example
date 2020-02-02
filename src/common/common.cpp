@@ -1,6 +1,7 @@
 #include "common.h"
 #include <iostream>
 
+namespace mirror {
 int RatioAnchors(const cv::Rect & anchor,
 	const std::vector<float>& ratios, 
 	std::vector<cv::Rect>* anchors) {
@@ -133,4 +134,6 @@ float CalculSimilarity(const std::vector<float>&feature1, const std::vector<floa
 		feature_norm2 += feature2[i] * feature2[i];
 	}
 	return inner_product / sqrt(feature_norm1) / sqrt(feature_norm2);
+}
+
 }
