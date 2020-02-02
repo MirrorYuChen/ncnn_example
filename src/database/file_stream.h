@@ -3,7 +3,7 @@
 
 #include <fstream>
 
-// 定义接口
+namespace mirror {
 class StreamWriter {
 public:
 	using self = StreamWriter;
@@ -115,6 +115,7 @@ static size_t Read(StreamReader &reader, T *arr, size_t size) {
 	return reader.read(reinterpret_cast<char *>(arr), sizeof(T) * size);
 }
 
+}
 
 #endif // !_FILE_STREAM_H_
 
