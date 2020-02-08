@@ -4,8 +4,9 @@
 using namespace mirror;
 
 int TestLandmark(int argc, char* argv[]) {
-	cv::Mat img_src = cv::imread("../images/4.jpg");
-	const char* root_path = "../models";
+	const char* img_file = "../data/images/4.jpg";
+	cv::Mat img_src = cv::imread(img_file);
+	const char* root_path = "../data/models";
 
 	double start = static_cast<double>(cv::getTickCount());
 	
@@ -35,8 +36,9 @@ int TestLandmark(int argc, char* argv[]) {
 }
 
 int TestRecognize(int argc, char* argv[]) {
-	cv::Mat img_src = cv::imread("../images/4.jpg");
-	const char* root_path = "../models";
+	const char* img_file = "../data/images/4.jpg";
+	cv::Mat img_src = cv::imread(img_file);
+	const char* root_path = "../data/models";
 
 	double start = static_cast<double>(cv::getTickCount());
 	FaceEngine face_engine;
@@ -60,8 +62,8 @@ int TestRecognize(int argc, char* argv[]) {
 		cv::Rect face = faces.at(i).face_;
 		cv::rectangle(img_src, face, cv::Scalar(0, 255, 0), 2);		
 	}
-	cv::imwrite("../images/face1.jpg", face1);
-	cv::imwrite("../images/face2.jpg", face2);
+	cv::imwrite("../data/images/face1.jpg", face1);
+	cv::imwrite("../data/images/face2.jpg", face2);
 	cv::imwrite("result.jpg", img_src);
 	std::cout << "similarity is: " << sim << std::endl;
 
@@ -70,8 +72,9 @@ int TestRecognize(int argc, char* argv[]) {
 }
 
 int TestAlignFace(int argc, char* argv[]) {
-	cv::Mat img_src = cv::imread("../images/4.jpg");
-	const char* root_path = "../models";
+	const char* img_file = "../data/images/4.jpg";
+	cv::Mat img_src = cv::imread(img_file);
+	const char* root_path = "../data/models";
 
 	double start = static_cast<double>(cv::getTickCount());
 	
@@ -98,8 +101,9 @@ int TestAlignFace(int argc, char* argv[]) {
 }
 
 int TestDetector(int argc, char* argv[]) {
-	cv::Mat img_src = cv::imread("../images/4.jpg");
-	const char* root_path = "../models";
+	const char* img_file = "../data/images/4.jpg";
+	cv::Mat img_src = cv::imread(img_file);
+	const char* root_path = "../data/models";
 
 	FaceEngine face_engine;
 	face_engine.LoadModel(root_path);
@@ -119,7 +123,7 @@ int TestDetector(int argc, char* argv[]) {
 			cv::circle(img_src, curr_pt, 2, cv::Scalar(255, 0, 255), 2);
 		}		
 	}
-	cv::imwrite("../images/mtcnn_result.jpg", img_src);
+	cv::imwrite("../data/images/mtcnn_result.jpg", img_src);
 	cv::imshow("result", img_src);
 	cv::waitKey(0);
 
@@ -127,16 +131,15 @@ int TestDetector(int argc, char* argv[]) {
 }
 
 int TestTrack(int argc, char* argv[]) {
-	cv::Mat img_src = cv::imread("../images/4.jpg");
+	const char* img_file = "../data/images/4.jpg";
+	cv::Mat img_src = cv::imread(img_file);
 	cv::VideoCapture cam(0);
 	if (!cam.isOpened()) {
 		std::cout << "open camera failed." << std::endl;
 		return -1;
 	}
 
-
-	const char* root_path = "../models";
-
+	const char* root_path = "../data/models";
 	FaceEngine face_engine;
 	face_engine.LoadModel(root_path);
 
@@ -167,14 +170,14 @@ int TestTrack(int argc, char* argv[]) {
 }
 
 int test_database(int argc, char* argv[]) {
-    const char* img_path = "../images/4.jpg";
+    const char* img_path = "../data/images/4.jpg";
     cv::Mat img_src = cv::imread(img_path);
     if (img_src.empty()) {
         std::cout << "load image failed." << std::endl;
         return 10001;
     }
 
-    const char* root_path = "../models";
+    const char* root_path = "../data/models";
     FaceEngine* face_engine = new FaceEngine();
     face_engine->LoadModel(root_path);
     face_engine->Load();
@@ -202,7 +205,7 @@ int test_database(int argc, char* argv[]) {
 
     }
     face_engine->Save();
-    cv::imwrite("../images/result.jpg", img_src);
+    cv::imwrite("../data/images/result.jpg", img_src);
 
     return 0;
 }
