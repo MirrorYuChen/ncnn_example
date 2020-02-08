@@ -62,29 +62,33 @@ int Mtcnn::Detect(const cv::Mat & img_src,
 	}
 	cv::Size max_size = cv::Size(img_src.cols, img_src.rows);
 	cv::Mat img_cpy = img_src.clone();
+	ncnn::Mat img_in = ncnn::Mat::from_pixels(img_src.data,
+		ncnn::Mat::PIXEL_BGR2RGB, img_src.cols, img_src.rows);
+	img_in.substract_mean_normalize(meanVals, normVals);
+	
 	std::vector<FaceInfo> first_bboxes, second_bboxes;
 	std::vector<FaceInfo> first_bboxes_result;
-	PDetect(img_cpy, &first_bboxes);
+	PDetect(img_in, &first_bboxes);
 	NMS(first_bboxes, &first_bboxes_result, nms_threshold_[0]);
 	Refine(&first_bboxes_result, max_size);
 
-	RDetect(img_cpy, first_bboxes_result, &second_bboxes);
+	RDetect(img_in, first_bboxes_result, &second_bboxes);
 	std::vector<FaceInfo> second_bboxes_result;
 	NMS(second_bboxes, &second_bboxes_result, nms_threshold_[1]);
 	Refine(&second_bboxes_result, max_size);
 
 	std::vector<FaceInfo> third_bboxes;
-	ODetect(img_cpy, second_bboxes_result, &third_bboxes);
+	ODetect(img_in, second_bboxes_result, &third_bboxes);
 	NMS(third_bboxes, faces, nms_threshold_[2], "MIN");
 	Refine(faces, max_size);
 	return 0;
 }
 
-int Mtcnn::PDetect(const cv::Mat & img_src,
+int Mtcnn::PDetect(const ncnn::Mat & img_in,
 	std::vector<FaceInfo>* first_bboxes) {
 	first_bboxes->clear();
-	int width = img_src.cols;
-	int height = img_src.rows;
+	int width = img_in.w;
+	int height = img_in.h;
 	float min_side = MIN(width, height);
 	float curr_scale = float(pnet_size_) / min_face_size_;
 	min_side *= curr_scale;
@@ -99,34 +103,30 @@ int Mtcnn::PDetect(const cv::Mat & img_src,
 	for (int i = 0; i < static_cast<size_t>(scales.size()); ++i) {
 		int w = static_cast<int>(width * scales[i]);
 		int h = static_cast<int>(height * scales[i]);
-		cv::Mat img_resized;
-		cv::resize(img_src, img_resized, cv::Size(w, h));
-		std::cout << "width: " << w << " height: " << h << std::endl;
-		ncnn::Mat in = ncnn::Mat::from_pixels(img_resized.data,
-			ncnn::Mat::PIXEL_BGR2RGB, img_resized.cols, img_resized.rows);
-		in.substract_mean_normalize(meanVals, normVals);
+		ncnn::Mat img_resized;
+		ncnn::resize_bilinear(img_in, img_resized, w, h);
 		ncnn::Extractor ex = pnet_->create_extractor();
 		//ex.set_num_threads(2);
 		ex.set_light_mode(true);
-		ex.input("data", in);
+		ex.input("data", img_resized);
 		ncnn::Mat score_mat, location_mat;
 		ex.extract("prob1", score_mat);
 		ex.extract("conv4-2", location_mat);
 		const int stride = 2;
 		const int cell_size = 12;
-		for (int row = 0; row < score_mat.h; ++row) {
-			for (int col = 0; col < score_mat.w; ++col) {
-				int index = row * score_mat.w + col;
+		for (int h = 0; h < score_mat.h; ++h) {
+			for (int w = 0; w < score_mat.w; ++w) {
+				int index = h * score_mat.w + w;
 				// pnet output: 1x1x2  no-face && face
 				// face score: channel(1)
 				float score = score_mat.channel(1)[index];
 				if (score < threshold_[0]) continue;
 
 				// 1. generated bounding box
-				int x1 = round((stride * col + 1) / scales[i]);
-				int y1 = round((stride * row + 1) / scales[i]);
-				int x2 = round((stride * col + 1 + cell_size) / scales[i]);
-				int y2 = round((stride * row + 1 + cell_size) / scales[i]);
+				int x1 = round((stride * w + 1) / scales[i]);
+				int y1 = round((stride * h + 1) / scales[i]);
+				int x2 = round((stride * w + 1 + cell_size) / scales[i]);
+				int y2 = round((stride * h + 1 + cell_size) / scales[i]);
 
 				// 2. regression bounding box
 				float x1_reg = location_mat.channel(0)[index];
@@ -155,21 +155,19 @@ int Mtcnn::PDetect(const cv::Mat & img_src,
 	return 0;
 }
 
-int Mtcnn::RDetect(const cv::Mat & img_src,
+int Mtcnn::RDetect(const ncnn::Mat & img_in,
 	const std::vector<FaceInfo>& first_bboxes,
 	std::vector<FaceInfo>* second_bboxes) {
 	second_bboxes->clear();
 	for (int i = 0; i < static_cast<int>(first_bboxes.size()); ++i) {
-		cv::Rect face = first_bboxes.at(i).face_ & cv::Rect(0,0, img_src.cols, img_src.rows);
-		std::cout << "rnet input: " << face << std::endl;
-		cv::Mat img_face = img_src(face).clone();
-		ncnn::Mat in = ncnn::Mat::from_pixels_resize(img_face.data,
-			ncnn::Mat::PIXEL_BGR2RGB, img_face.cols, img_face.rows, 24, 24);
-		in.substract_mean_normalize(meanVals, normVals);
+		cv::Rect face = first_bboxes.at(i).face_ & cv::Rect(0, 0, img_in.w, img_in.h);
+		ncnn::Mat img_face, img_resized;
+		ncnn::copy_cut_border(img_in, img_face, face.y, img_in.h - face.br().y, face.x, img_in.w - face.br().x);
+		ncnn::resize_bilinear(img_face, img_resized, 24, 24);
 		ncnn::Extractor ex = rnet_->create_extractor();
 		ex.set_light_mode(true);
 		ex.set_num_threads(2);
-		ex.input("data", in);
+		ex.input("data", img_resized);
 		ncnn::Mat score_mat, location_mat;
 		ex.extract("prob1", score_mat);
 		ex.extract("conv5-2", location_mat);
@@ -193,22 +191,20 @@ int Mtcnn::RDetect(const cv::Mat & img_src,
 	return 0;
 }
 
-int Mtcnn::ODetect(const cv::Mat & img_src,
+int Mtcnn::ODetect(const ncnn::Mat & img_in,
 	const std::vector<FaceInfo>& second_bboxes,
 	std::vector<FaceInfo>* third_bboxes) {
 	third_bboxes->clear();
 	for (int i = 0; i < static_cast<int>(second_bboxes.size()); ++i) {
-		cv::Rect face = second_bboxes.at(i).face_ & cv::Rect(0,0, img_src.cols, img_src.rows);
-		cv::Mat img_face = img_src(face).clone();
-		cv::Mat img_resized;
-		cv::resize(img_face, img_resized, cv::Size(48, 48));
-		ncnn::Mat in = ncnn::Mat::from_pixels(img_resized.data,
-			ncnn::Mat::PIXEL_BGR, img_resized.cols, img_resized.rows);
-		in.substract_mean_normalize(meanVals, normVals);
+		cv::Rect face = second_bboxes.at(i).face_ & cv::Rect(0, 0, img_in.w, img_in.h);
+		ncnn::Mat img_face, img_resized;
+		ncnn::copy_cut_border(img_in, img_face, face.y, img_in.h - face.br().y, face.x, img_in.w - face.br().x);
+		ncnn::resize_bilinear(img_face, img_resized, 48, 48);
+
 		ncnn::Extractor ex = onet_->create_extractor();
 		ex.set_light_mode(true);
 		ex.set_num_threads(2);
-		ex.input("data", in);
+		ex.input("data", img_resized);
 		ncnn::Mat score_mat, location_mat, keypoints_mat;
 		ex.extract("prob1", score_mat);
 		ex.extract("conv6-2", location_mat);

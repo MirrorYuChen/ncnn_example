@@ -97,7 +97,7 @@ int TestAlignFace(int argc, char* argv[]) {
 
 }
 
-int TestCenterface(int argc, char* argv[]) {
+int TestDetector(int argc, char* argv[]) {
 	cv::Mat img_src = cv::imread("../images/4.jpg");
 	const char* root_path = "../models";
 
@@ -119,7 +119,9 @@ int TestCenterface(int argc, char* argv[]) {
 			cv::circle(img_src, curr_pt, 2, cv::Scalar(255, 0, 255), 2);
 		}		
 	}
-	cv::imwrite("../images/centerface_result.jpg", img_src);
+	cv::imwrite("../images/mtcnn_result.jpg", img_src);
+	cv::imshow("result", img_src);
+	cv::waitKey(0);
 
 	return 0;
 }
@@ -207,10 +209,10 @@ int test_database(int argc, char* argv[]) {
 
 
 int main(int argc, char* argv[]) {
-	return TestLandmark(argc, argv);
+	// return TestLandmark(argc, argv);
 	// return TestRecognize(argc, argv);
 	// return TestAlignFace(argc, argv);
-	// return TestCenterface(argc, argv);
+	return TestDetector(argc, argv);
 	// return TestTrack(argc, argv);
 	// return test_database(argc, argv);
 }

@@ -28,10 +28,10 @@ private:
 	const float threshold_[3] = { 0.8f, 0.8f, 0.6f };
 
 private:
-	int PDetect(const cv::Mat& img_src, std::vector<FaceInfo>* first_bboxes);
-	int RDetect(const cv::Mat& img_src, const std::vector<FaceInfo>& first_bboxes,
+	int PDetect(const ncnn::Mat& img_in, std::vector<FaceInfo>* first_bboxes);
+	int RDetect(const ncnn::Mat& img_in, const std::vector<FaceInfo>& first_bboxes,
 		std::vector<FaceInfo>* second_bboxes);
-	int ODetect(const cv::Mat& img_src,
+	int ODetect(const ncnn::Mat& img_in,
 		const std::vector<FaceInfo>& second_bboxes,
 		std::vector<FaceInfo>* third_bboxes);
 
