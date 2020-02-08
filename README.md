@@ -27,7 +27,7 @@
 ## model comes from:
 ### https://github.com/Charrin/RetinaFace-Cpp/tree/master/Demo/ncnn/models
 ### **result:**
-### ![图片](https://github.com/MirrorYuChen/ncnn_106landmarks/blob/master/images/result.jpg)
+### ![图片](https://github.com/MirrorYuChen/ncnn_example/blob/master/data/images/result.jpg)
 
 # **3.add jetson nano project based on vulkan**
 ## **(1). build vulkan ncnn:**
@@ -98,6 +98,9 @@ time cost: 553.328ms
 
 # **12.refactor the project**
 ## use factory methold to create detector, landmarker and recognizer
+
+# **13.optimize the mtcnn**
+## reuse the input, end up substracting meanvals and normvals repeatly.
 
 # **TODO:**
 - [x] refactor the project
