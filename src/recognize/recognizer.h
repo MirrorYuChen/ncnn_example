@@ -8,10 +8,9 @@
 namespace mirror {
 class Recognizer {
 public:
-	Recognizer();
-	virtual ~Recognizer();
-	virtual int LoadModel(const char* root_path);
-	virtual int ExtractFeature(const cv::Mat& img_face, std::vector<float>* feature);
+	virtual ~Recognizer() {};
+	virtual int LoadModel(const char* root_path) = 0;
+	virtual int ExtractFeature(const cv::Mat& img_face, std::vector<float>* feature) = 0;
 
 };
 

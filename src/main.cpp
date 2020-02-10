@@ -212,10 +212,10 @@ int test_database(int argc, char* argv[]) {
 
 
 int main(int argc, char* argv[]) {
-	// return TestLandmark(argc, argv);
+	return TestLandmark(argc, argv);
 	// return TestRecognize(argc, argv);
 	// return TestAlignFace(argc, argv);
-	return TestDetector(argc, argv);
+	// return TestDetector(argc, argv);
 	// return TestTrack(argc, argv);
 	// return test_database(argc, argv);
 }

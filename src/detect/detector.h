@@ -8,17 +8,15 @@ namespace mirror {
 // 抽象类
 class Detector {
 public:
-	Detector();
-	virtual ~Detector();
-	virtual int LoadModel(const char* root_path);
-	virtual int Detect(const cv::Mat& img_src, std::vector<FaceInfo>* faces);
+	virtual ~Detector() {};
+	virtual int LoadModel(const char* root_path) = 0;
+	virtual int Detect(const cv::Mat& img_src, std::vector<FaceInfo>* faces) = 0;
 
 };
 
 // 工厂基类
 class DetectorFactory {
 public:
-	DetectorFactory() {}
 	virtual Detector* CreateDetector() = 0;
 	virtual ~DetectorFactory() {};
 };
