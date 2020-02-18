@@ -1,4 +1,5 @@
 #include "common.h"
+#include <algorithm>
 #include <iostream>
 
 namespace mirror {
@@ -92,28 +93,35 @@ int NMS(const std::vector<FaceInfo>& faces,
 	std::vector<FaceInfo>* result, const float& threshold,
 	const std::string& type) {
 	result->clear();
-	if (faces.size() == 0) {
-		return -1;
-	}
+    if (faces.size() == 0)
+        return -1;
 
-	std::vector<int> indexes(faces.size());
-	for (int i = 0; i < indexes.size(); i++) {
-		indexes[i] = i;
-	}
+    std::vector<FaceInfo> faces_tmp;
+    faces_tmp.assign(faces.begin(), faces.end());
+    std::sort(faces_tmp.begin(), faces_tmp.end(),
+    [](const FaceInfo& a, const FaceInfo& b) {
+        return a.score_ < b.score_;
+    });
 
-	while (indexes.size() > 0) {
-		int good_index = indexes[0];
-		result->push_back(faces[good_index]);
-		std::vector<int> tmp_indexes = indexes;
-		indexes.clear();
-		for (int i = 1; i < tmp_indexes.size(); i++) {
-			int tmp_index = tmp_indexes[i];
-			float iou = 0.0f;
-			ComputeIOU(faces[good_index].face_, faces[tmp_index].face_, &iou, type);
-			if (iou <= threshold)
-				indexes.push_back(tmp_index);
-		}
-	}
+    std::vector<size_t> idx(faces_tmp.size());
+
+    for (unsigned i = 0; i < idx.size(); i++) {
+        idx[i] = i;
+    }
+
+    while (idx.size() > 0) {
+        int good_idx = idx[0];
+        result->push_back(faces_tmp[good_idx]);
+        std::vector<size_t> tmp = idx;
+        idx.clear();
+        for (unsigned i = 1; i < tmp.size(); i++) {
+            int tmp_i = tmp[i];
+            float iou = 0.0f;
+            ComputeIOU(faces_tmp[good_idx].face_, faces_tmp[tmp_i].face_, &iou, type);
+            if (iou <= threshold)
+                idx.push_back(tmp_i);
+        }
+    }
 }
 
 
