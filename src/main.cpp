@@ -52,7 +52,7 @@ int TestRecognize(int argc, char* argv[]) {
 	std::vector<float> feature1, feature2;
 	face_engine.ExtractFeature(face1, &feature1);
 	face_engine.ExtractFeature(face2, &feature2);
-	float sim = CalculSimilarity(feature1, feature2);
+	float sim = CalculateSimilarity(feature1, feature2);
 
 	double end = static_cast<double>(cv::getTickCount());
 	double time_cost = (end - start) / cv::getTickFrequency() * 1000;
@@ -169,7 +169,7 @@ int TestTrack(int argc, char* argv[]) {
 	return 0;
 }
 
-int test_database(int argc, char* argv[]) {
+int TestDatabase(int argc, char* argv[]) {
     const char* img_path = "../data/images/4.jpg";
     cv::Mat img_src = cv::imread(img_path);
     if (img_src.empty()) {
@@ -192,11 +192,11 @@ int test_database(int argc, char* argv[]) {
         std::vector<float> feat;
         face_engine->ExtractFeature(img_src(face).clone(), &feat);
 
-#if 0
+#if 1
         face_engine->Insert(feat, "face" + std::to_string(i));
 #endif
 
-#if 1
+#if 0
         QueryResult query_result;
         face_engine->QueryTop(feat, &query_result);
         std::cout << i << "-th face is: " << query_result.name_ <<
@@ -215,7 +215,7 @@ int main(int argc, char* argv[]) {
 	// return TestLandmark(argc, argv);
 	// return TestRecognize(argc, argv);
 	// return TestAlignFace(argc, argv);
-	return TestDetector(argc, argv);
+	// return TestDetector(argc, argv);
 	// return TestTrack(argc, argv);
-	// return test_database(argc, argv);
+	return TestDatabase(argc, argv);
 }

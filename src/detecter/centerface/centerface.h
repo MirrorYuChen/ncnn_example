@@ -1,13 +1,13 @@
 #ifndef _FACE_CENTERFACE_H_
 #define _FACE_CENTERFACE_H_
 
-#include "../detector.h"
+#include "../detecter.h"
 #include <vector>
 #include "opencv2/core.hpp"
 #include "ncnn/net.h"
 
 namespace mirror {
-class CenterFace : public Detector {
+class CenterFace : public Detecter {
 public:
     CenterFace();
     ~CenterFace();

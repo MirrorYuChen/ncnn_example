@@ -11,6 +11,7 @@
 
 namespace mirror {
 #define kFaceFeatureDim 128
+#define kFaceNameDim 256
 const int threads_num = 2;
 
 struct FaceInfo {

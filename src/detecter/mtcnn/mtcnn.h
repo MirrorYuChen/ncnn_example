@@ -1,13 +1,13 @@
 #ifndef _FACE_MTCNN_H_
 #define _FACE_MTCNN_H_
 
-#include "../detector.h"
+#include "../detecter.h"
 #include <vector>
 #include "opencv2/core.hpp"
 #include "ncnn/net.h"
 
 namespace mirror {
-class Mtcnn : public Detector {
+class Mtcnn : public Detecter {
 public:
 	Mtcnn();
 	~Mtcnn();

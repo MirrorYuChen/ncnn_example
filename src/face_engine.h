@@ -18,7 +18,7 @@ public:
 
 	// database operation
     int Insert(const std::vector<float>& feat, const std::string& name);
-	int Delete(int64_t index);
+	int Delete(const std::string& name);
 	int64_t QueryTop(const std::vector<float>& feat, QueryResult *query_result = nullptr);
     int Save();
     int Load();

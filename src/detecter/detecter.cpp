@@ -1,18 +1,18 @@
-#include "detector.h"
+#include "detecter.h"
 #include "centerface/centerface.h"
 #include "mtcnn/mtcnn.h"
 #include "retinaface/retinaface.h"
 
 namespace mirror {
-Detector* CenterfaceFactory::CreateDetector() {
+Detecter* CenterfaceFactory::CreateDetecter() {
 	return new CenterFace();
 }
 
-Detector* MtcnnFactory::CreateDetector() {
+Detecter* MtcnnFactory::CreateDetecter() {
 	return new Mtcnn();
 }
 
-Detector* RetinafaceFactory::CreateDetector() {
+Detecter* RetinafaceFactory::CreateDetecter() {
 	return new RetinaFace();
 }
 

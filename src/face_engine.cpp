@@ -1,24 +1,24 @@
 #include "face_engine.h"
 #include <iostream>
 #include <string>
-#include "align/aligner.h"
+#include "aligner/aligner.h"
 #include "database/face_database.h"
-#include "track/tracker.h"
-#include "landmark/landmarker.h"
-#include "recognize/recognizer.h"
-#include "detect/detector.h"
+#include "tracker/tracker.h"
+#include "landmarker/landmarker.h"
+#include "recognizer/recognizer.h"
+#include "detecter/detecter.h"
 
 namespace mirror {
 class FaceEngine::Impl {
 public:
 	Impl() {
-		detector_factory_ = new MtcnnFactory();
+		detecter_factory_ = new MtcnnFactory();
 		landmarker_factory_ = new ZQLandmarkerFactory();
 		recognizer_factory_ = new MobilefacenetRecognizerFactory();
 
 		database_ = new FaceDatabase();
 		tracker_ = new Tracker();
-		detector_ = detector_factory_->CreateDetector();
+		detecter_ = detecter_factory_->CreateDetecter();
 		landmarker_ = landmarker_factory_->CreateLandmarker();
 		recognizer_ = recognizer_factory_->CreateRecognizer();
 		aligner_ = new Aligner();
@@ -30,9 +30,9 @@ public:
 		// frnet_->opt.use_vulkan_compute = 1;
 	}
 	~Impl() {
-		if (detector_factory_) {
-			delete detector_factory_;
-			detector_factory_ = nullptr;
+		if (detecter_factory_) {
+			delete detecter_factory_;
+			detecter_factory_ = nullptr;
 		}
 		if (landmarker_factory_) {
 			delete landmarker_factory_;
@@ -46,9 +46,9 @@ public:
 			delete database_;
 			database_ = nullptr;
 		}
-		if (detector_) {
-			delete detector_;
-			detector_ = nullptr;
+		if (detecter_) {
+			delete detecter_;
+			detecter_ = nullptr;
 		}
 
 		if (tracker_) {
@@ -75,13 +75,13 @@ public:
 	}
 
 public:
-	DetectorFactory* detector_factory_;
+	DetecterFactory* detecter_factory_;
 	LandmarkerFactory* landmarker_factory_;
 	RecognizerFactory* recognizer_factory_;
 
 	FaceDatabase* database_;
 	Tracker* tracker_;
-	Detector* detector_;
+	Detecter* detecter_;
 	Landmarker* landmarker_;
 	Recognizer* recognizer_;
 	Aligner * aligner_;
@@ -93,7 +93,7 @@ public:
 };
 
 int FaceEngine::Impl::LoadModel(const char * root_path) {
-	if (detector_->LoadModel(root_path) != 0) {
+	if (detecter_->LoadModel(root_path) != 0) {
 		return 10000;
 	}
 
@@ -126,7 +126,7 @@ int FaceEngine::LoadModel(const char * root_path) {
 }
 
 int FaceEngine::Detect(const cv::Mat & img_src, std::vector<FaceInfo>* faces) {
-	return impl_->detector_->Detect(img_src, faces);
+	return impl_->detecter_->Detect(img_src, faces);
 }
 
 int FaceEngine::Track(const std::vector<FaceInfo>& curr_faces, std::vector<TrackedFaceInfo>* faces) {
@@ -151,8 +151,8 @@ int FaceEngine::Insert(const std::vector<float>& feat, const std::string& name) 
 	return impl_->database_->Insert(feat, name);
 }
 
-int FaceEngine::Delete(int64_t index) {
-	return impl_->database_->Delete(index);
+int FaceEngine::Delete(const std::string& name) {
+	return impl_->database_->Delete(name);
 }
 
 int64_t FaceEngine::QueryTop(const std::vector<float>& feat, QueryResult *query_result) {

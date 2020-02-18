@@ -7,19 +7,19 @@ message("Opencv Version: ${OPENCV_VERSION}" )
 
 file(GLOB SRC_FILES
     src/*.cpp
-    src/align/*cpp
+    src/aligner/*cpp
     src/common/*.cpp
-    src/detect/*.cpp
-    src/track/*.cpp
+    src/tracker/*.cpp
     src/database/*.cpp
     src/database/stream/*.cpp
-    src/detect/retinaface/*.cpp
-    src/detect/mtcnn/*.cpp
-    src/detect/centerface/*.cpp
-    src/landmark/*.cpp
-    src/landmark/zqlandmark/*.cpp
-    src/recognize/*.cpp
-    src/recognize/mobilefacenet/*.cpp
+    src/detecter/*.cpp
+    src/detecter/retinaface/*.cpp
+    src/detecter/mtcnn/*.cpp
+    src/detecter/centerface/*.cpp
+    src/landmarker/*.cpp
+    src/landmarker/zqlandmark/*.cpp
+    src/recognizer/*.cpp
+    src/recognizer/mobilefacenet/*.cpp
 )
 file(GLOB LIBS lib/*.a)
 
@@ -30,15 +30,15 @@ set(INC_DIRS
     ${PROJECT_SOURCE_DIR}/src/common
     ${PROJECT_SOURCE_DIR}/src/database
     ${PROJECT_SOURCE_DIR}/src/database/stream
-    ${PROJECT_SOURCE_DIR}/src/detect
-    ${PROJECT_SOURCE_DIR}/src/detect/retinaface
-    ${PROJECT_SOURCE_DIR}/src/detect/mtcnn
-    ${PROJECT_SOURCE_DIR}/src/detect/centerface
-    ${PROJECT_SOURCE_DIR}/src/track
-    ${PROJECT_SOURCE_DIR}/src/landmark
-    ${PROJECT_SOURCE_DIR}/src/landmark/zqlandmark
-    ${PROJECT_SOURCE_DIR}/src/recognize
-    ${PROJECT_SOURCE_DIR}/src/recognize/mobilefacenet
+    ${PROJECT_SOURCE_DIR}/src/detecter
+    ${PROJECT_SOURCE_DIR}/src/detecert/retinaface
+    ${PROJECT_SOURCE_DIR}/src/detecter/mtcnn
+    ${PROJECT_SOURCE_DIR}/src/detecter/centerface
+    ${PROJECT_SOURCE_DIR}/src/tracker
+    ${PROJECT_SOURCE_DIR}/src/landmarker
+    ${PROJECT_SOURCE_DIR}/src/landmarker/zqlandmark
+    ${PROJECT_SOURCE_DIR}/src/recognizer
+    ${PROJECT_SOURCE_DIR}/src/recognizer/mobilefacenet
 )
 
 FIND_PACKAGE( OpenMP REQUIRED)

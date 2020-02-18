@@ -1,12 +1,12 @@
 #ifndef _RETINAFACE_H_
 #define _RETINAFACE_H_
 
-#include "../detector.h"
+#include "../detecter.h"
 #include "ncnn/net.h"
 
 namespace mirror {
 using ANCHORS = std::vector<cv::Rect>;
-class RetinaFace : public Detector {
+class RetinaFace : public Detecter {
 public:
 	RetinaFace();
 	~RetinaFace();
