@@ -42,4 +42,7 @@ size_t FileStream::read(char* data, size_t length) {
 	return size_t(result);
 }
 
+
 }
+
+

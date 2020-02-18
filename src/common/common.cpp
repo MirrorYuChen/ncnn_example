@@ -125,7 +125,7 @@ int NMS(const std::vector<FaceInfo>& faces,
 }
 
 
-float CalculSimilarity(const std::vector<float>&feature1, const std::vector<float>& feature2) {
+float CalculateSimilarity(const std::vector<float>&feature1, const std::vector<float>& feature2) {
 	if (feature1.size() != feature2.size()) {
 		std::cout << "feature size not match." << std::endl;
 		return 10003;

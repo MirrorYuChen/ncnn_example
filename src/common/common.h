@@ -54,7 +54,7 @@ int ComputeIOU(const cv::Rect & rect1,
 int NMS(const std::vector<FaceInfo>& faces, std::vector<FaceInfo> * result,
 	const float& threshold, const std::string& type = "UNION");
 
-float CalculSimilarity(const std::vector<float>&feature1, const std::vector<float>& feature2);
+float CalculateSimilarity(const std::vector<float>&feature1, const std::vector<float>& feature2);
 
 }
 
