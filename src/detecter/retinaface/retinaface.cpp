@@ -116,8 +116,7 @@ int RetinaFace::Detect(const cv::Mat & img_src,
 			}
 		}
 	}
-
-	std::sort(faces_tmp.begin(), faces_tmp.end(), [](FaceInfo face1, FaceInfo face2) { return face1.score_ < face2.score_; });
+	
 	NMS(faces_tmp, faces, iouThreshold_);
 	std::cout << faces->size() << " faces detected." << std::endl;
 
