@@ -88,43 +88,6 @@ int ComputeIOU(const cv::Rect & rect1,
 	return 0;
 }
 
-
-int NMS(const std::vector<FaceInfo>& faces,
-	std::vector<FaceInfo>* result, const float& threshold,
-	const std::string& type) {
-	result->clear();
-    if (faces.size() == 0)
-        return -1;
-
-    std::vector<FaceInfo> faces_tmp;
-    faces_tmp.assign(faces.begin(), faces.end());
-    std::sort(faces_tmp.begin(), faces_tmp.end(),
-    [](const FaceInfo& a, const FaceInfo& b) {
-        return a.score_ < b.score_;
-    });
-
-    std::vector<size_t> idx(faces_tmp.size());
-
-    for (unsigned i = 0; i < idx.size(); i++) {
-        idx[i] = i;
-    }
-
-    while (idx.size() > 0) {
-        int good_idx = idx[0];
-        result->push_back(faces_tmp[good_idx]);
-        std::vector<size_t> tmp = idx;
-        idx.clear();
-        for (unsigned i = 1; i < tmp.size(); i++) {
-            int tmp_i = tmp[i];
-            float iou = 0.0f;
-            ComputeIOU(faces_tmp[good_idx].face_, faces_tmp[tmp_i].face_, &iou, type);
-            if (iou <= threshold)
-                idx.push_back(tmp_i);
-        }
-    }
-}
-
-
 float CalculateSimilarity(const std::vector<float>&feature1, const std::vector<float>& feature2) {
 	if (feature1.size() != feature2.size()) {
 		std::cout << "feature size not match." << std::endl;
