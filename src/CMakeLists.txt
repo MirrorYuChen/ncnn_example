@@ -74,6 +74,18 @@ target_include_directories(VisionEngine
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/classifier/classifier/mobilenet>
 )
 
+if(MIRROR_INSTALL_SDK)
+    install(TARGETS VisionEngine EXPORT VisionEngine ARCHIVE DESTINATION ${PROJECT_BINARY_DIR}/lib)
+    install(FILES
+        ${CMAKE_CURRENT_SOURCE_DIR}/common/common.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/face/face_engine.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/object/object_engine.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/classifier/classifier_engine.h
+        DESTINATION ${PROJECT_BINARY_DIR}/include
+    )
+endif()
+
+
 if(MIRROR_BUILD_FACE)
     add_executable(face ${CMAKE_CURRENT_SOURCE_DIR}/face/test_face.cpp)
     target_link_libraries(face PUBLIC VisionEngine)
