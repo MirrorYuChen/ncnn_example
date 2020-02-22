@@ -1,6 +1,8 @@
 # **ncnn_example:**
 # **I promise i'll update this project forever!**
-# 2020.02.22: split the model files from the project && add classifier && add object detecter 
+# 2020.02.22: 
+## 1.split the model files from the project
+## 2. add classifier && add object detecter 
 # **How to use?**
 ## 1.download the models from baiduyun: [baidu](https://pan.baidu.com/s/15wg10Ry6-5a2wa5MIJbNww)(code: w48b)
 ## 2.put models to directory: ncnn_example/data/models 
@@ -26,7 +28,6 @@
 
 # project refer to:
 ## https://github.com/Tencent/ncnn
-## https://github.com/Charrin/RetinaFace-Cpp
 ## https://github.com/zuoqing1988/ZQCNN
 ## https://github.com/Charrin/RetinaFace-Cpp
 ## https://github.com/deepinsight/insightface
