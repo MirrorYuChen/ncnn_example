@@ -14,7 +14,7 @@ public:
 	int DetectObject(const cv::Mat& img_src, std::vector<ObjectInfo>* objects);
 
 private:
-	ncnn::Net* detecter_ = nullptr;
+	ncnn::Net* mobilenetssd_ = nullptr;
 	bool initialized_;
 	const float meanVals[3] = { 0.5f, 0.5f, 0.5f };
 	const float normVals[3] = { 0.007843f, 0.007843f, 0.007843f };

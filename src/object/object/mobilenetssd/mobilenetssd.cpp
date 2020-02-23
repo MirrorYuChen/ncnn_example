@@ -12,17 +12,17 @@
 
 namespace mirror {
 MobilenetSSD::MobilenetSSD() :
-	detecter_(new ncnn::Net()),
+	mobilenetssd_(new ncnn::Net()),
 	initialized_(false) {
 #if MIRROR_VULKAN
 	ncnn::create_gpu_instance();	
-    detecter_->opt.use_vulkan_compute = true;
+    mobilenetssd_->opt.use_vulkan_compute = true;
 #endif // MIRROR_VULKAN
 
 }
 
 MobilenetSSD::~MobilenetSSD() {
-	detecter_->clear();
+	mobilenetssd_->clear();
 #if MIRROR_VULKAN
 	ncnn::destroy_gpu_instance();
 #endif // MIRROR_VULKAN
@@ -32,8 +32,8 @@ int MobilenetSSD::LoadModel(const char * root_path) {
 	std::cout << "start load model." << std::endl;
 	std::string obj_param = std::string(root_path) + "/mobilenetssd.param";
 	std::string obj_bin = std::string(root_path) + "/mobilenetssd.bin";
-	if (detecter_->load_param(obj_param.c_str()) == -1 ||
-		detecter_->load_model(obj_bin.c_str()) == -1) {
+	if (mobilenetssd_->load_param(obj_param.c_str()) == -1 ||
+		mobilenetssd_->load_model(obj_bin.c_str()) == -1) {
 		std::cout << "load ssd model failed." << std::endl;
 		return 10000;
 	}
@@ -63,7 +63,7 @@ int MobilenetSSD::DetectObject(const cv::Mat & img_src,
 		ncnn::Mat::PIXEL_BGR, img_src.cols, img_src.rows, 300, 300);
 	in.substract_mean_normalize(meanVals, normVals);
 
-	ncnn::Extractor ex = detecter_->create_extractor();
+	ncnn::Extractor ex = mobilenetssd_->create_extractor();
 	ex.input("data", in);
 	ncnn::Mat out;
 	ex.extract("detection_out", out);

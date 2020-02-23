@@ -2,6 +2,7 @@
 # **I promise i'll update this project forever!**
 # 2020.02.23: 
 ## 1. add vulkan option
+## 2. fix the network name of mobilenetssd 
 # 2020.02.22: 
 ## 1. split the model files from the project
 ## 2. add classifier && add object detecter 
