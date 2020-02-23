@@ -26,8 +26,10 @@
 ### ![图片](https://github.com/MirrorYuChen/ncnn_example/blob/master/data/images/classify_result.jpg)
 
 # 6. TODO:
+- [x] optimize the speed bu using block strategy
+- [x] add yolo
+- [x] add pose
 - [x] refactor the project
-- [x] optimize the speed
 
 # 7. references
 ## https://github.com/Tencent/ncnn
