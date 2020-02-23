@@ -2,14 +2,25 @@
 #include <iostream>
 #include <string>
 
+#if MIRROR_VULKAN
+#include "gpu.h"
+#endif // MIRROR_VULKAN
+
 namespace mirror {
 ZQLandmarker::ZQLandmarker() {
 	zq_landmarker_net_ = new ncnn::Net();
 	initialized = false;
+#if MIRROR_VULKAN
+	ncnn::create_gpu_instance();	
+    zq_landmarker_net_->opt.use_vulkan_compute = true;
+#endif // MIRROR_VULKAN
 }
 
 ZQLandmarker::~ZQLandmarker() {
 	zq_landmarker_net_->clear();
+#if MIRROR_VULKAN
+	ncnn::destroy_gpu_instance();
+#endif // MIRROR_VULKAN	
 }
 
 int ZQLandmarker::LoadModel(const char * root_path) {

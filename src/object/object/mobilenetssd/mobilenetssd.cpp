@@ -6,13 +6,26 @@
 #include "opencv2/imgproc.hpp"
 #include "opencv2/core.hpp"
 
+#if MIRROR_VULKAN
+#include "gpu.h"
+#endif // MIRROR_VULKAN
+
 namespace mirror {
 MobilenetSSD::MobilenetSSD() :
 	detecter_(new ncnn::Net()),
-	initialized_(false) {}
+	initialized_(false) {
+#if MIRROR_VULKAN
+	ncnn::create_gpu_instance();	
+    detecter_->opt.use_vulkan_compute = true;
+#endif // MIRROR_VULKAN
+
+}
 
 MobilenetSSD::~MobilenetSSD() {
 	detecter_->clear();
+#if MIRROR_VULKAN
+	ncnn::destroy_gpu_instance();
+#endif // MIRROR_VULKAN
 }
 
 int MobilenetSSD::LoadModel(const char * root_path) {

@@ -2,14 +2,27 @@
 #include <iostream>
 #include "opencv2/imgproc.hpp"
 
+#if MIRROR_VULKAN
+#include "gpu.h"
+#endif // MIRROR_VULKAN
+
 namespace mirror {
 CenterFace::CenterFace() {
     centernet_ = new ncnn::Net();
     initialized_ = false;
+#if MIRROR_VULKAN
+	ncnn::create_gpu_instance();	
+    centernet_->opt.use_vulkan_compute = true;
+#endif // MIRROR_VULKAN
 }
 
 CenterFace::~CenterFace(){
-    centernet_->clear();
+    if (centernet_) {
+        centernet_->clear();
+    }
+#if MIRROR_VULKAN
+	ncnn::destroy_gpu_instance();
+#endif // MIRROR_VULKAN	
 }
 
 int CenterFace::LoadModel(const char* root_path) {

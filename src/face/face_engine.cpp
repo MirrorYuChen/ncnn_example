@@ -13,7 +13,7 @@ namespace mirror {
 class FaceEngine::Impl {
 public:
     Impl() {
-        detecter_factory_ = new RetinafaceFactory();
+        detecter_factory_ = new MtcnnFactory();
         landmarker_factory_ = new ZQLandmarkerFactory();
         recognizer_factory_ = new MobilefacenetRecognizerFactory();
         

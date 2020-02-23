@@ -2,6 +2,10 @@
 #include <iostream>
 #include "opencv2/imgproc.hpp"
 
+#if MIRROR_VULKAN
+#include "gpu.h"
+#endif // MIRROR_VULKAN
+
 namespace mirror {
 Mtcnn::Mtcnn() :
 	pnet_(new ncnn::Net()),
@@ -10,12 +14,28 @@ Mtcnn::Mtcnn() :
 	pnet_size_(12),
 	min_face_size_(40),
 	scale_factor_(0.709f),
-	initialized_(false) {}
+	initialized_(false) {
+#if MIRROR_VULKAN
+	ncnn::create_gpu_instance();	
+    pnet_->opt.use_vulkan_compute = true;
+	rnet_->opt.use_vulkan_compute = true;
+	onet_->opt.use_vulkan_compute = true;
+#endif // MIRROR_VULKAN
+}
 
 Mtcnn::~Mtcnn() {
-	pnet_->clear();
-	rnet_->clear();
-	onet_->clear();
+	if (pnet_) {
+		pnet_->clear();
+	}
+	if (rnet_) {
+		rnet_->clear();
+	}
+	if (onet_) {
+		onet_->clear();
+	}
+#if MIRROR_VULKAN
+	ncnn::destroy_gpu_instance();
+#endif // MIRROR_VULKAN	
 }
 
 int Mtcnn::LoadModel(const char * root_path) {
