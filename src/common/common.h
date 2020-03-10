@@ -29,6 +29,7 @@ struct FaceInfo {
 	cv::Rect location_;
 	float score_;
 	float keypoints_[10];
+    bool mask_;
 };
 
 struct TrackedFaceInfo {

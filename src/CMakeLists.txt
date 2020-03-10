@@ -9,6 +9,7 @@ set(SRC_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/face/detecter/centerface/centerface.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/face/detecter/mtcnn/mtcnn.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/face/detecter/retinaface/retinaface.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/face/detecter/anticonv/anticonv.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/face/landmarker/landmarker.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/face/landmarker/zqlandmarker/zqlandmarker.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/face/recognizer/recognizer.cpp
@@ -61,6 +62,8 @@ target_include_directories(VisionEngine
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/face/database>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/face/detecter>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/face/detecter/centerface>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/face/detecter/mtcnn>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/face/detecter/anticonv>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/face/landmarker>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/face/landmarker/zqlandmarker>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/face/recognizer>

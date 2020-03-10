@@ -44,6 +44,13 @@ public:
 	Detecter* CreateDetecter();
 };
 
+class AnticonvFactory : public DetecterFactory {
+public:
+	AnticonvFactory() {}
+	~AnticonvFactory() {}
+	Detecter* CreateDetecter();
+};
+
 }
 
 #endif // !_FACE_DETECTER_H_

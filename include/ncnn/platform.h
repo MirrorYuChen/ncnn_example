@@ -20,8 +20,8 @@
 #define NCNN_OPENCV 0
 #define NCNN_BENCHMARK 0
 #define NCNN_PIXEL 1
-#define NCNN_PIXEL_ROTATE 0
-#define NCNN_VULKAN 0
+#define NCNN_PIXEL_ROTATE 1
+#define NCNN_VULKAN 1
 #define NCNN_REQUANT 0
 #define NCNN_AVX2 0
 
@@ -32,6 +32,10 @@
 #else
 #include <pthread.h>
 #endif
+
+#if __ANDROID_API__ >= 26
+#define VK_USE_PLATFORM_ANDROID_KHR
+#endif // __ANDROID_API__ >= 26
 
 namespace ncnn {
 

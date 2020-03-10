@@ -2,6 +2,7 @@
 #include "centerface/centerface.h"
 #include "mtcnn/mtcnn.h"
 #include "retinaface/retinaface.h"
+#include "anticonv/anticonv.h"
 
 namespace mirror {
 Detecter* CenterfaceFactory::CreateDetecter() {
@@ -16,5 +17,8 @@ Detecter* RetinafaceFactory::CreateDetecter() {
 	return new RetinaFace();
 }
 
+Detecter* AnticonvFactory::CreateDetecter() {
+	return new AntiConv();
+}
 
 }

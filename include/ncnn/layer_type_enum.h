@@ -71,4 +71,5 @@ HardSigmoid = 65,
 SELU = 66,
 HardSwish = 67,
 Noop = 68,
+PixelShuffle = 69,
 

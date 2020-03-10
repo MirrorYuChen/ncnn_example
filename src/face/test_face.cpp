@@ -228,12 +228,45 @@ int TestDatabase(int argc, char* argv[]) {
     return 0;
 }
 
+int TestMask(int argc, char* argv[]) {
+	const char* img_file = "../../data/images/mask3.jpg";
+	cv::Mat img_src = cv::imread(img_file);
+	const char* root_path = "../../data/models";
+
+	FaceEngine* face_engine = new FaceEngine();
+	face_engine->LoadModel(root_path);
+	std::vector<FaceInfo> faces;
+	double start = static_cast<double>(cv::getTickCount());
+	face_engine->DetectFace(img_src, &faces);
+	double end = static_cast<double>(cv::getTickCount());
+	double time_cost = (end - start) / cv::getTickFrequency() * 1000;
+	std::cout << "time cost: " << time_cost << "ms" << std::endl;
+
+	int num_face = static_cast<int>(faces.size());
+	for (int i = 0; i < num_face; ++i) {
+		if (faces[i].mask_) {
+			cv::rectangle(img_src, faces[i].location_, cv::Scalar(0, 255, 0), 2);
+		} else {
+			cv::rectangle(img_src, faces[i].location_, cv::Scalar(0, 0, 255), 2);
+		}
+	}
+	cv::imwrite("../../data/images/mask_result.jpg", img_src);
+	cv::imshow("result", img_src);
+	cv::waitKey(0);
+
+	delete face_engine;
+	face_engine = nullptr;
+
+	return 0;
+}
+
 
 int main(int argc, char* argv[]) {
-	return TestLandmark(argc, argv);
+	// return TestLandmark(argc, argv);
 	// return TestRecognize(argc, argv);
 	// return TestAlignFace(argc, argv);
 	// return TestDetecter(argc, argv);
 	// return TestTrack(argc, argv);
 	// return TestDatabase(argc, argv);
+	return TestMask(argc, argv);
 }

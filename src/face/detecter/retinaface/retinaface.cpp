@@ -68,19 +68,18 @@ int RetinaFace::DetectFace(const cv::Mat & img_src,
 	cv::Mat img_cpy = img_src.clone();
 	int img_width = img_cpy.cols;
 	int img_height = img_cpy.rows;
-	float factor_x = img_width / 300.0f;
-	float factor_y = img_height / 300.0f;
+	float factor_x = static_cast<float>(img_width) / inputSize_.width;
+	float factor_y = static_cast<float>(img_height) / inputSize_.height;
 	ncnn::Extractor ex = retina_net_->create_extractor();
 	ncnn::Mat in = ncnn::Mat::from_pixels_resize(img_cpy.data,
-		ncnn::Mat::PIXEL_BGR2RGB, img_width, img_height, 300, 300);
+		ncnn::Mat::PIXEL_BGR2RGB, img_width, img_height, inputSize_.width, inputSize_.height);
 	ex.input("data", in);
-
-	std::vector<float> scores;
+	
 	std::vector<FaceInfo> faces_tmp;
 	for (int i = 0; i < 3; ++i) {
-		std::string class_layer_name = "face_rpn_cls_prob_reshape_stride" + std::to_string(RPNs[i]);
-		std::string bbox_layer_name = "face_rpn_bbox_pred_stride" + std::to_string(RPNs[i]);
-		std::string landmark_layer_name = "face_rpn_landmark_pred_stride" + std::to_string(RPNs[i]);
+		std::string class_layer_name = "face_rpn_cls_prob_reshape_stride" + std::to_string(RPNs_[i]);
+		std::string bbox_layer_name = "face_rpn_bbox_pred_stride" + std::to_string(RPNs_[i]);
+		std::string landmark_layer_name = "face_rpn_landmark_pred_stride" + std::to_string(RPNs_[i]);
 
 		ncnn::Mat class_mat, bbox_mat, landmark_mat;
 		ex.extract(class_layer_name.c_str(), class_mat);
@@ -96,12 +95,11 @@ int RetinaFace::DetectFace(const cv::Mat & img_src,
 				int index = h * width + w;
 				for (int a = 0; a < anchor_num; ++a) {
 					float score = class_mat.channel(anchor_num + a)[index];
-					if (score < 0.8) {
+					if (score < scoreThreshold_) {
 						continue;
 					}
-					scores.push_back(score);
-					cv::Rect box = cv::Rect(w * RPNs[i] + anchors[a].x,
-						h * RPNs[i] + anchors[a].y,
+					cv::Rect box = cv::Rect(w * RPNs_[i] + anchors[a].x,
+						h * RPNs_[i] + anchors[a].y,
 						anchors[a].width,
 						anchors[a].height);
 

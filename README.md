@@ -1,5 +1,8 @@
 # **ncnn_example:**
 # **I promise i'll update this project forever!**
+# 2020.03.10
+## 1.add mask detect code
+## 2.optimize the name of retinaface 
 # 2020.02.23: 
 ## 1. add vulkan option
 ## 2. fix the network name of mobilenetssd 
@@ -20,13 +23,15 @@
 ## 5. result
 ### face result:
 ### ![图片](https://github.com/MirrorYuChen/ncnn_example/blob/master/data/images/result.jpg)
+### mask result:
+### ![图片](https://github.com/MirrorYuChen/ncnn_example/blob/master/data/images/mask_result.jpg)
 ### object result:
 ### ![图片](https://github.com/MirrorYuChen/ncnn_example/blob/master/data/images/object_result.jpg)
 ### classifier result:
 ### ![图片](https://github.com/MirrorYuChen/ncnn_example/blob/master/data/images/classify_result.jpg)
 
 # 6. TODO:
-- [x] optimize the speed bu using block strategy
+- [x] optimize the speed by using block strategy
 - [x] add yolo
 - [x] add pose
 - [x] refactor the project
