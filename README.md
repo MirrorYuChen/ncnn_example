@@ -3,6 +3,7 @@
 # 2020.03.10
 ## 1.add mask detect code
 ## 2.optimize the name of retinaface 
+## 3.update ncnn lib version to newest:  [20200226](!https://github.com/Tencent/ncnn/tree/20200226)
 # 2020.02.23: 
 ## 1. add vulkan option
 ## 2. fix the network name of mobilenetssd 
