@@ -11,7 +11,7 @@
 ## 1. split the model files from the project
 ## 2. add classifier && add object detecter 
 # **How to use?**
-## 1. download the models from baiduyun: [baidu](https://pan.baidu.com/s/15wg10Ry6-5a2wa5MIJbNww)(code: w48b)
+## 1. download the models from baiduyun: [baidu](https://pan.baidu.com/s/15wg10Ry6-5a2wa5MIJbNww)(code: w48b) and [google](https://drive.google.com/drive/folders/1kZ96ehstrlDMIH5HF8NHYYkD40yttxmd?usp=sharing)
 ## 2. put models to directory: ncnn_example/data/models 
 ## 3. compile the project:
 ```
