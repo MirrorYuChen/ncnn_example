@@ -28,10 +28,18 @@ set(SRC_FILES
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O2 -fPIC -std=c++11 -fopenmp")
 add_library(VisionEngine STATIC ${SRC_FILES})
 
+find_package(ncnn)
+if(ncnn_FOUND)
+    list(APPEND LIBS ncnn)
+endif()
+
 find_package(OpenCV)
 message("Opencv Version: ${OPENCV_VERSION}" )
-file(GLOB LIBS ${CMAKE_CURRENT_SOURCE_DIR}/../lib/*.a)
-target_link_libraries(VisionEngine PUBLIC ${LIBS} ${OpenCV_LIBS})
+if(OpenCV_FOUND)
+    list(APPEND LIBS ${OpenCV_LIBS})
+endif()
+
+target_link_libraries(VisionEngine PUBLIC ${LIBS})
 
 if(MIRROR_OPENMP)
     find_package(OpenMP)
@@ -52,7 +60,6 @@ endif()
 
 target_include_directories(VisionEngine
     PUBLIC
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include>
         $<INSTALL_INTERFACE:include/vision>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/common>
 

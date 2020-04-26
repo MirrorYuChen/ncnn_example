@@ -2,7 +2,7 @@
 #define _CLASSIFIER_MOBILENET_H_
 
 #include "../classifier.h"
-#include "ncnn/net.h"
+#include "net.h"
 
 namespace mirror {
 
