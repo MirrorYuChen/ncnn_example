@@ -70,7 +70,7 @@ int const NMS(const std::vector<T>& inputs, std::vector<T>* result,
     inputs_tmp.assign(inputs.begin(), inputs.end());
     std::sort(inputs_tmp.begin(), inputs_tmp.end(),
     [](const T& a, const T& b) {
-        return a.score_ < b.score_;
+        return a.score_ > b.score_;
     });
 
     std::vector<int> indexes(inputs_tmp.size());
@@ -93,6 +93,7 @@ int const NMS(const std::vector<T>& inputs, std::vector<T>* result,
             }
         }
     }
+    return 0;
 }
 
 float CalculateSimilarity(const std::vector<float>&feature1, const std::vector<float>& feature2);
