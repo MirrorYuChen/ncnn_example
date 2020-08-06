@@ -28,6 +28,13 @@ public:
 	~ZQLandmarkerFactory() {}
 };
 
+class InsightfaceLandmarkerFactory : public LandmarkerFactory {
+public:
+	InsightfaceLandmarkerFactory(){}
+	Landmarker* CreateLandmarker();
+	~InsightfaceLandmarkerFactory() {}
+};
+
 }
 
 #endif // !_FACE_LANDMARKER_H_

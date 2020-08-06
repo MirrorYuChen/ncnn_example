@@ -1,27 +1,5 @@
-set(SRC_FILES
-    ${CMAKE_CURRENT_SOURCE_DIR}/common/common.cpp
-
-    ${CMAKE_CURRENT_SOURCE_DIR}/face/face_engine.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/face/aligner/aligner.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/face/database/face_database.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/face/database/stream/file_stream.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/face/detecter/detecter.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/face/detecter/centerface/centerface.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/face/detecter/mtcnn/mtcnn.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/face/detecter/retinaface/retinaface.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/face/detecter/anticonv/anticonv.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/face/landmarker/landmarker.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/face/landmarker/zqlandmarker/zqlandmarker.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/face/recognizer/recognizer.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/face/recognizer/mobilefacenet/mobilefacenet.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/face/tracker/tracker.cpp
-
-    ${CMAKE_CURRENT_SOURCE_DIR}/object/object_engine.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/object/object/mobilenetssd/mobilenetssd.cpp
-
-    ${CMAKE_CURRENT_SOURCE_DIR}/classifier/classifier_engine.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/classifier/classifier/mobilenet/mobilenet.cpp
-
+file(GLOB_RECURSE SRC_FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
 )
 
 # list(APPEND SRCS ${LAYER_ARCH_SRC})
@@ -64,8 +42,11 @@ target_include_directories(VisionEngine
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/face/detecter/centerface>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/face/detecter/mtcnn>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/face/detecter/anticonv>
+        
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/face/landmarker>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/face/landmarker/zqlandmarker>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/face/landmarker/insightface>
+
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/face/recognizer>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/face/recognizer/mobilefacenet>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/face/tracker>

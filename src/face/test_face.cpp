@@ -262,11 +262,11 @@ int TestMask(int argc, char* argv[]) {
 
 
 int main(int argc, char* argv[]) {
-	// return TestLandmark(argc, argv);
+	return TestLandmark(argc, argv);
 	// return TestRecognize(argc, argv);
 	// return TestAlignFace(argc, argv);
 	// return TestDetecter(argc, argv);
 	// return TestTrack(argc, argv);
 	// return TestDatabase(argc, argv);
-	return TestMask(argc, argv);
+	// return TestMask(argc, argv);
 }

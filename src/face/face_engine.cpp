@@ -14,7 +14,7 @@ class FaceEngine::Impl {
 public:
     Impl() {
         detecter_factory_ = new AnticonvFactory();
-        landmarker_factory_ = new ZQLandmarkerFactory();
+        landmarker_factory_ = new InsightfaceLandmarkerFactory();
         recognizer_factory_ = new MobilefacenetRecognizerFactory();
         
         detecter_ = detecter_factory_->CreateDetecter();

@@ -1,5 +1,8 @@
 # **ncnn_example:**
 # **I promise i'll update this project forever!**
+# 20200806
+## 1.add insightface 106 landmarks(https://github.com/deepinsight/insightface/tree/master/alignment/coordinateReg)
+## 2.optimize the CMakeLists.txt
 # 2020.03.10
 ## 1.add mask detect code
 ## 2.optimize the name of retinaface 
