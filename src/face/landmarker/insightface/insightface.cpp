@@ -40,7 +40,7 @@ int InsightfaceLandmarker::ExtractKeypoints(const cv::Mat & img_src,
 	std::cout << "start extract keypoints." << std::endl;
 	keypoints->clear();
 	if (!initialized) {
-		std::cout << "zq landmarker unitialized." << std::endl;
+		std::cout << "insightface landmarker unitialized." << std::endl;
 		return 10000;
 	}
 
