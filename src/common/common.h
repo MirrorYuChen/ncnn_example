@@ -97,6 +97,7 @@ int const NMS(const std::vector<T>& inputs, std::vector<T>* result,
 }
 
 float CalculateSimilarity(const std::vector<float>&feature1, const std::vector<float>& feature2);
+void EnlargeRect(const float& scale, cv::Rect* rect);
 
 }
 

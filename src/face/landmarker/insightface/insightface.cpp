@@ -1,6 +1,9 @@
 #include "insightface.h"
 #include <iostream>
 #include <string>
+#include "../../common/common.h"
+#include "opencv2/imgproc.hpp"
+#include "opencv2/highgui.hpp"
 
 #if MIRROR_VULKAN
 #include "gpu.h"
@@ -49,17 +52,38 @@ int InsightfaceLandmarker::ExtractKeypoints(const cv::Mat & img_src,
 		return 10001;
 	}
 
-	cv::Mat img_face = img_src(face).clone();
+	// 1 enlarge the face rect
+	cv::Rect face_enlarged = face;
+	const float enlarge_scale = 1.2f;
+	EnlargeRect(enlarge_scale, &face_enlarged);
+	face_enlarged = face_enlarged & cv::Rect(0, 0, img_src.cols, img_src.rows);
+	cv::Mat img_face = img_src(face_enlarged).clone();
+
+	// 2 resize make border
+	int max_side = MAX(img_face.cols, img_face.rows);
+	float resize_scale = static_cast<float> (max_side) / 192;
+	int face_width_resized = img_face.cols / resize_scale;
+	int face_height_resized = img_face.rows / resize_scale;
+	cv::Rect roi = cv::Rect((192 - face_width_resized) / 2, (192 - face_height_resized) / 2,
+						face_width_resized, face_height_resized);
+	cv::Mat face_in = cv::Mat(cv::Size(192, 192), CV_8UC3, cv::Scalar(0,0,0));
+	cv::resize(img_face, face_in(roi), cv::Size(face_width_resized, face_height_resized));
+	cv::imwrite("resize_face.jpg", face_in);
+	// 3 compute the offset
+	float offset_x = roi.x * resize_scale;
+	float offset_y = roi.y * resize_scale;
+
+	// 4 start infer
 	ncnn::Extractor ex = insightface_landmarker_net_->create_extractor();
-	ncnn::Mat in = ncnn::Mat::from_pixels_resize(img_face.data,
-		ncnn::Mat::PIXEL_BGR, img_face.cols, img_face.rows, 192, 192);
+	ncnn::Mat in = ncnn::Mat::from_pixels(face_in.data,
+		ncnn::Mat::PIXEL_BGR, face_in.cols, face_in.rows);
 	ex.input("data", in);
 	ncnn::Mat out;
 	ex.extract("fc1", out);
 
 	for (int i = 0; i < 106; ++i) {
-		float x = (out[2 * i] + 1.0f) * img_face.cols / 2 + face.x;
-		float y = (out[2 * i + 1] + 1.0f) * img_face.rows / 2 + face.y;
+		float x = (out[2 * i] + 1.0f) * img_face.cols / 2 + face_enlarged.x - offset_x;
+		float y = (out[2 * i + 1] + 1.0f) * img_face.rows / 2 + face_enlarged.y - offset_y;
 		keypoints->push_back(cv::Point2f(x, y));
 	}
 
