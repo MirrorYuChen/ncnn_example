@@ -68,7 +68,7 @@ int InsightfaceLandmarker::ExtractKeypoints(const cv::Mat & img_src,
 						face_width_resized, face_height_resized);
 	cv::Mat face_in = cv::Mat(cv::Size(192, 192), CV_8UC3, cv::Scalar(0,0,0));
 	cv::resize(img_face, face_in(roi), cv::Size(face_width_resized, face_height_resized));
-	cv::imwrite("resize_face.jpg", face_in);
+	// cv::imwrite("resize_face.jpg", face_in);
 	// 3 compute the offset
 	float offset_x = roi.x * resize_scale;
 	float offset_y = roi.y * resize_scale;
