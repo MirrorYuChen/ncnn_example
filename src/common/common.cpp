@@ -116,4 +116,15 @@ void EnlargeRect(const float& scale, cv::Rect* rect) {
     rect->height = scale * rect->height;
 }
 
+void RectifyRect(cv::Rect* rect) {
+	int max_side = MAX(rect->width, rect->height);
+	int offset_x = (max_side - rect->width) / 2;
+	int offset_y = (max_side - rect->height) / 2;
+
+	rect->x -= offset_x;
+	rect->y -= offset_y;
+	rect->width = max_side;
+	rect->height = max_side;    
+}
+
 }
