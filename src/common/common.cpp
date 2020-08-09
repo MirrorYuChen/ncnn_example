@@ -107,4 +107,24 @@ float CalculateSimilarity(const std::vector<float>&feature1, const std::vector<f
 	return inner_product / sqrt(feature_norm1) / sqrt(feature_norm2);
 }
 
+void EnlargeRect(const float& scale, cv::Rect* rect) {
+	float offset_x = (scale - 1.f) / 2.f * rect->width;
+    float offset_y = (scale - 1.f) / 2.f * rect->height;
+    rect->x -= offset_x;
+    rect->y -= offset_y;
+    rect->width = scale * rect->width;
+    rect->height = scale * rect->height;
+}
+
+void RectifyRect(cv::Rect* rect) {
+	int max_side = MAX(rect->width, rect->height);
+	int offset_x = (max_side - rect->width) / 2;
+	int offset_y = (max_side - rect->height) / 2;
+
+	rect->x -= offset_x;
+	rect->y -= offset_y;
+	rect->width = max_side;
+	rect->height = max_side;    
+}
+
 }
