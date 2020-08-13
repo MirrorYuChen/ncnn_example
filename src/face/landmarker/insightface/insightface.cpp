@@ -67,7 +67,7 @@ int InsightfaceLandmarker::ExtractKeypoints(const cv::Mat & img_src,
 	// 4 do inference
 	ncnn::Extractor ex = insightface_landmarker_net_->create_extractor();
 	ncnn::Mat in = ncnn::Mat::from_pixels_resize(img_face.data,
-		ncnn::Mat::PIXEL_BGR, img_face.cols, img_face.rows, 192, 192);
+		ncnn::Mat::PIXEL_BGR2RGB, img_face.cols, img_face.rows, 192, 192);
 	ex.input("data", in);
 	ncnn::Mat out;
 	ex.extract("fc1", out);
