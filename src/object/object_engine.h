@@ -5,15 +5,25 @@
 #include "opencv2/core.hpp"
 #include "../common/common.h"
 
+#if defined(_MSC_VER) || defined(_WIN32) || defined(_WIN64)
+    #ifdef OBJECT_EXPORTS
+        #define OBJECT_API __declspec(dllexport)
+    #else
+        #define OBJECT_API __declspec(dllimport)
+    #endif
+#else
+    #define OBJECT_API __attribute__ ((visibility("default")))
+#endif
+
 namespace mirror {
 
 class ObjectEngine {
 public:
-	ObjectEngine();
-	~ObjectEngine();
+	OBJECT_API ObjectEngine();
+	OBJECT_API ~ObjectEngine();
 
-	int LoadModel(const char* root_path);
-	int DetectObject(const cv::Mat& img_src, std::vector<ObjectInfo>* objects);
+	OBJECT_API int LoadModel(const char* root_path);
+	OBJECT_API int DetectObject(const cv::Mat& img_src, std::vector<ObjectInfo>* objects);
 
 private:
 	class Impl;

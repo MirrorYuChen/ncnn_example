@@ -13,7 +13,8 @@ namespace mirror {
 class FaceEngine::Impl {
 public:
     Impl() {
-        detecter_factory_ = new AnticonvFactory();
+        // detecter_factory_ = new AnticonvFactory();
+        detecter_factory_ = new RetinafaceFactory();
         landmarker_factory_ = new InsightfaceLandmarkerFactory();
         recognizer_factory_ = new MobilefacenetRecognizerFactory();
         
@@ -156,7 +157,7 @@ int FaceEngine::LoadModel(const char* root_path) {
 
 int FaceEngine::Track(const std::vector<FaceInfo>& curr_faces,
 	std::vector<TrackedFaceInfo>* faces) {
-	
+	return impl_->Track(curr_faces, faces);
 }
 
 int FaceEngine::DetectFace(const cv::Mat& img_src, std::vector<FaceInfo>* faces) {

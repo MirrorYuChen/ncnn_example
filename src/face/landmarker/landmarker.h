@@ -16,7 +16,7 @@ public:
 // 工厂基类
 class LandmarkerFactory {
 public:
-	virtual Landmarker* CreateLandmarker() {};
+	virtual Landmarker* CreateLandmarker() = 0;
 	virtual ~LandmarkerFactory() {}
 };
 

@@ -4,7 +4,6 @@
 #include <vector>
 #include <string>
 #include "opencv2/core.hpp"
-
 #if defined(_OPENMP)
 #include <omp.h>
 #endif

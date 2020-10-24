@@ -1,3 +1,4 @@
+#define FACE_EXPORTS
 #include "opencv2/opencv.hpp"
 #include "face_engine.h"
 
@@ -39,9 +40,9 @@ int TestLandmark(int argc, char* argv[]) {
 }
 
 int TestRecognize(int argc, char* argv[]) {
-	const char* img_file = "../data/images/4.jpg";
+	const char* img_file = "../../data/images/4.jpg";
 	cv::Mat img_src = cv::imread(img_file);
-	const char* root_path = "../data/models";
+	const char* root_path = "../../data/models";
 
 	double start = static_cast<double>(cv::getTickCount());
 	FaceEngine* face_engine = new FaceEngine();
@@ -64,8 +65,8 @@ int TestRecognize(int argc, char* argv[]) {
 		cv::Rect face = faces.at(i).location_;
 		cv::rectangle(img_src, face, cv::Scalar(0, 255, 0), 2);		
 	}
-	cv::imwrite("../data/images/face1.jpg", face1);
-	cv::imwrite("../data/images/face2.jpg", face2);
+	cv::imwrite("../../data/images/face1.jpg", face1);
+	cv::imwrite("../../data/images/face2.jpg", face2);
 	cv::imwrite("result.jpg", img_src);
 	std::cout << "similarity is: " << sim << std::endl;
 
@@ -125,7 +126,7 @@ int TestDetecter(int argc, char* argv[]) {
 	for (int i = 0; i < static_cast<int>(faces.size()); ++i) {
 		FaceInfo face_info = faces.at(i);
 		cv::rectangle(img_src, face_info.location_, cv::Scalar(0, 255, 0), 2);
-#if 0
+#if 1
 		for (int num = 0; num < 5; ++num) {
 			cv::Point curr_pt = cv::Point(face_info.keypoints_[num],
 										  face_info.keypoints_[num + 5]);
@@ -133,7 +134,7 @@ int TestDetecter(int argc, char* argv[]) {
 		}	
 #endif 
 	}
-	cv::imwrite("../../data/images/mtcnn_result.jpg", img_src);
+	cv::imwrite("../../data/images/retinaface_result.jpg", img_src);
 	cv::imshow("result", img_src);
 	cv::waitKey(0);
 
@@ -262,10 +263,10 @@ int TestMask(int argc, char* argv[]) {
 
 
 int main(int argc, char* argv[]) {
-	return TestLandmark(argc, argv);
+	//return TestLandmark(argc, argv);
 	// return TestRecognize(argc, argv);
 	// return TestAlignFace(argc, argv);
-	// return TestDetecter(argc, argv);
+	 return TestDetecter(argc, argv);
 	// return TestTrack(argc, argv);
 	// return TestDatabase(argc, argv);
 	// return TestMask(argc, argv);

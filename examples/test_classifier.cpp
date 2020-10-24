@@ -1,3 +1,4 @@
+#define CLASSIFIER_EXPORTS
 #include "classifier_engine.h"
 #include "opencv2/opencv.hpp"
 

@@ -1,3 +1,4 @@
+#define OBJECT_EXPORTS
 #include "opencv2/highgui.hpp"
 #include "opencv2/imgproc.hpp"
 #include "object_engine.h"
