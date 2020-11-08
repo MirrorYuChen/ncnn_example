@@ -19,15 +19,16 @@
 # **How to use?**
 ## 1. download the models from baiduyun: [baidu](https://pan.baidu.com/s/15wg10Ry6-5a2wa5MIJbNww)(code: w48b) and [google](https://drive.google.com/drive/folders/1kZ96ehstrlDMIH5HF8NHYYkD40yttxmd?usp=sharing)
 ## 2. put models to directory: ncnn_example/data/models 
-## 3. compile the project:
+## 3. replace ncnn lib compiled on your system
+## 4. compile the project:
 ```
 >> cd ncnn_example && mkdir build && cd build && make -j3 
 ```
-## 4. run the project:
+## 5. run the project:
 ```
 >> cd src && ./face && ./object && ./classifier
 ```
-## 5. result
+## 6. result
 ### face result:
 ### ![图片](https://github.com/MirrorYuChen/ncnn_example/blob/master/data/images/result.jpg)
 ### mask result:
@@ -37,13 +38,13 @@
 ### classifier result:
 ### ![图片](https://github.com/MirrorYuChen/ncnn_example/blob/master/data/images/classify_result.jpg)
 
-# 6. TODO:
+# 7. TODO:
 - [x] optimize the speed by using block strategy
 - [x] add yolo
 - [x] add pose
 - [x] refactor the project
 
-# 7. references
+# 8. references
 ## https://github.com/Tencent/ncnn
 ## https://github.com/zuoqing1988/ZQCNN
 ## https://github.com/Charrin/RetinaFace-Cpp
