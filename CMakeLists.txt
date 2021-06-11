@@ -8,4 +8,6 @@ Option(MIRROR_BUILD_FACE "build face test" ON)
 Option(MIRROR_BUILD_OBJECT "build object test" ON)
 Option(MIRROR_BUILD_CLASSIFIER "build classifier test" ON)
 
+add_subdirectory(ncnn-20210525-full-source)
+
 add_subdirectory(src)
