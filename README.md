@@ -1,5 +1,8 @@
 # **ncnn_example:**
 # **I promise i'll update this project forever!**
+
+# 20210612:
+## 1.update the ncnn lib to 20210525
 # 20201024:
 ## 1.add retinaface keypoints
 ## 2.add visual studio scripts

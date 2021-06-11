@@ -15,13 +15,12 @@
 #ifndef NCNN_BLOB_H
 #define NCNN_BLOB_H
 
-#include <string>
-#include <vector>
+#include "mat.h"
 #include "platform.h"
 
 namespace ncnn {
 
-class Blob
+class NCNN_EXPORT Blob
 {
 public:
     // empty
@@ -35,7 +34,9 @@ public:
     // layer index which produce this blob as output
     int producer;
     // layer index which need this blob as input
-    std::vector<int> consumers;
+    int consumer;
+    // shape hint
+    Mat shape;
 };
 
 } // namespace ncnn
