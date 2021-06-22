@@ -3,7 +3,7 @@
 
 #include "../recognizer.h"
 #include <vector>
-#include "ncnn/net.h"
+#include "net.h"
 
 namespace mirror {
 

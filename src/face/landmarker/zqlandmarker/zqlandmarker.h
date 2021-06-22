@@ -2,7 +2,7 @@
 #define _FACE_ZQLANDMARKER_H_
 
 #include "../landmarker.h"
-#include "ncnn/net.h"
+#include "net.h"
 
 namespace mirror {
 class ZQLandmarker : public Landmarker {

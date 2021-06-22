@@ -2,7 +2,7 @@
 #define _FACE_ANTICONV_H_
 
 #include "../detecter.h"
-#include "ncnn/net.h"
+#include "net.h"
 
 namespace mirror {
 using ANCHORS = std::vector<cv::Rect>;

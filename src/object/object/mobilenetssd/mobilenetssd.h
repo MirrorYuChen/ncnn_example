@@ -2,7 +2,7 @@
 #define _OBJECT_MOBILENETSSD_H_
 
 #include "../object_detecter.h"
-#include "ncnn/net.h"
+#include "net.h"
 
 namespace mirror {
 class MobilenetSSD : public ObjectDetecter {

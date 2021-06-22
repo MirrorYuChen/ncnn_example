@@ -4,7 +4,7 @@
 #include "../detecter.h"
 #include <vector>
 #include "opencv2/core.hpp"
-#include "ncnn/net.h"
+#include "net.h"
 
 namespace mirror {
 class Mtcnn : public Detecter {
